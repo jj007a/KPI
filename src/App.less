@@ -1,0 +1,130 @@
+html,body{
+    margin:0px;
+    padding:0px;
+    height: 100%;
+    overflow: hidden;
+}
+html,body,div,ul,li,ol{
+    box-sizing: border-box
+}
+
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    height: 100%;
+    overflow: hidden;
+}
+
+.fl{float: left;}
+.fr{float: right;}
+.clear:before, .clear:after {content: ""; display: table;}
+.clear:after {clear: both;}
+.clear{*zoom: 1;overflow: hidden;}
+.child-float li{float: left;padding-right: 30px;}
+.disN{display: none!important;}
+.over-hidden{overflow: hidden;}
+.border-right{border-right: solid 1px #e6e6e6}
+ul,ol,li{list-style: none;}
+a{text-decoration: none;color:#000}
+
+// 变量
+.text-center{
+    text-align: center;
+}
+@borderColor:#d8dce5;
+@buttonColor:#0aa2e9;
+@buttonFocusColor:#165d7e;
+
+// 按钮样式
+button.el-button--primary{
+    border-color:@buttonColor;
+    background:@buttonColor;
+    &:focus,&:hover{
+        background:@buttonFocusColor;
+        border-color:@buttonFocusColor;
+    }
+}
+// 首个tab不可关闭
+.el-tabs__nav > div:first-child > span{
+    display: none;
+}
+
+// 横条，透明
+.main-space{
+    height: 20px;
+    background: transparent;
+}
+// 通用搜索表单域
+form.el-form{
+    position: relative;
+    .el-form-item{
+        width: 20%;
+    }
+    .open-dialog{
+        width: 20%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        text-align: right;
+    }
+    .el-form-item.is-success .el-input__inner{
+        border-color:@borderColor;
+    }
+}
+// 通用表格样式
+table[class^='el-table']{
+    th,td{
+        .text-center
+    }
+}
+// 通用分页样式
+.el-pagination{
+    .text-center;
+}
+// 通用弹窗样式
+.performance-dialog{
+    form.demo-ruleForm{
+        width: 420px;
+        .el-form-item{
+            width: auto;
+        }
+    } 
+    .el-dialog{
+        margin-top: 0!important;
+        top: 50%;
+        transform: translateY(-50%)
+    }
+}
+// 通用返回样式
+.back-page{
+    padding:40px
+}
+// 通用表格下的表单
+.follow-table{
+    border:1px solid #bebebe;
+    border-top: 0;
+    padding:10px 20px;
+    form.el-form{
+        .el-form-item{
+            width: 100%
+        }
+        .el-form-item.is-success{
+            .el-input__inner,.el-textarea__inner{
+                border-color:@borderColor;
+            }
+        } 
+    }
+}
+.el-form-item.is-success .el-input__validateIcon{
+    display: none;
+}
+ .el-input .el-input--small .el-input--small .el-input__inner {
+   height: 40px !important;
+   line-break: 40px !important;
+ }
+ .el-main{
+     width: 100%;
+     height: 100%;
+ }

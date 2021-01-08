@@ -1,0 +1,208 @@
+<!--  -->
+<template>
+    <div class="personnel">
+      <div class="personnelContent">
+        <el-dialog
+        title="考核评分"
+        :visible.sync="dialogVisible"
+        width="50%"
+       >
+       <div class="propBox score">
+         <h2>考核评分</h2>
+         <p>王小虎的月考核，当前22分</p>
+         <el-table
+          :data="tableData"
+          height="250"
+          border
+          style="width: 100%">
+            <el-table-column
+              prop="date"
+              label="考核内容"
+              >
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="总分"
+              width="100">
+            </el-table-column>
+             <el-table-column label="操作"  width="100">
+              <template slot-scope="scope">
+                <el-input v-model="score" ></el-input>
+              </template>
+          </el-table-column>
+          </el-table>
+       </div>
+        <span slot="footer" class="dialog-footer">
+           <el-button type="primary" @click="dialogVisible = false">提 交</el-button>
+          <el-button @click="dialogVisible = false">考核 结束</el-button>
+        </span>
+        </el-dialog>
+        <h1>绩效评分</h1>
+        <div class="divMain">
+          <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="姓名：">
+              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="部门：">
+              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="职位：">
+              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="角色：">
+              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" >查询</el-button>
+              <!-- <el-button type="primary" >添加绩效</el-button> -->
+            </el-form-item>
+        </el-form>
+        </div>
+        <el-table
+          :data="tableData"
+          style="width: 100%">
+          <el-table-column
+            prop="name"
+            label="模板"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            label="开始时间"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="结束时间">
+          </el-table-column>
+          <el-table-column
+            prop="proson"
+            label="周期">
+          </el-table-column>
+          <el-table-column
+            prop="proson"
+            label="成员">
+          </el-table-column>
+          <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="dialogVisible = true">评分</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="open">删除</el-button>
+        </template>
+      </el-table-column>
+        </el-table>
+        <div class="block">
+          <el-pagination
+            :hide-on-single-page="value"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="40">
+          </el-pagination>
+        </div>
+      </div>
+    </div>
+</template>
+
+<script>
+import Page5 from "./page5";
+export default {
+  ...Page5
+}
+</script>
+<style >
+  .personnel h1, h2 {
+    /* font-weight: normal; */
+    margin: 0;
+  }
+  .personnel ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  .personnel li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  .personnel a {
+    color: #42b983;
+  }
+  .personnel{
+  width: 100%;
+  height: 100%;  
+  }
+  .personnelContent{
+    width: 100%;
+    height: 100%; 
+    padding: 40px 24px;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  .personnel h1{
+    font-size: 30px;
+  }
+  .personnel .divMain{
+    width: 100%;
+    margin-top: 32px;
+  }
+ .personnel .divMain .el-form-item__label{
+   font-size: 16px;
+   font-weight: bold;
+  }
+ .personnel .divMain .el-input__inner{
+   width: 120px;
+   height: 40px;
+   line-height: 40px;
+   font-size: 16px;
+  }
+  .personnel form.el-form .el-form-item{
+    width: 190px;
+  }
+ .personnel .divMain .el-button--small, .el-button--small.is-round{
+   height: 40px;
+   font-size: 16px;
+  }
+ .personnel .el-table th, .el-table .has-gutter tr:first-child{
+   background-color: #FAFAFA;
+   color: #000;
+  }
+ .personnel .el-table th, .el-table{
+   color: #000;
+   font-size: 14px;
+  }
+ .personnel .el-table__row .el-table_1_column_5 .cell{ 
+    color: #1890FF;
+  }
+ .personnel .block{ 
+    margin-top: 32px;
+  }
+  .propBox{
+    margin: auto;
+  }
+  .propBox h2,
+  .propBox p{
+   text-align: center;
+  }
+  .propBox .el-form{
+    width: 90%;
+  }
+  .personnel .propBox form.el-form .el-form-item{
+    width: 100%;
+  }
+  .propBox .el-input--small .el-input__inner{
+   height: 40px;
+  }
+  .personnel .el-dialog__footer{
+    text-align: center;
+  }
+  .personnelContent .el-button{
+    height: 40px;
+    font-size: 16px;
+  }
+</style>
