@@ -12,6 +12,7 @@ import dashboard from '../pages/dashboard/dashboard'
 import login from '../pages/login/login'
 import register from '../pages/register/register'
 import pages from '../pages/pages'
+import { TabPane } from 'element-ui'
 
 Vue.use(Router)
 
@@ -85,18 +86,24 @@ const routes=[
 ]
 const router=new Router({
     routes,
-    mode:"history"
+    // mode:"history"
 })
-
-/* router.beforeEach((to, from, next) => {
-    if(to.path=='/login'){
-        next()
-    }else{
-        let token= localStorage.getItem('token')
-        if(token!=""&&token!="null"){
-            next({path:'/login',query:{redirect:to.fullPath}})
+router.beforeEach((to, from, next) => {
+    if(store.getters.token){
+        console.log(store.getters.token,'23')
+        if(to.path=='/login'){
+            next({ path: '/dashboard' })
+        }else{
+            next()
         }
+    }else{
+       if(to.path=='/login' || to.path=='/register'){
+           next()
+       }else{
+           next({ path: '/login' })
+       }
     }
-}) */
+})
+    
 
 export default router

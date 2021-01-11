@@ -29,7 +29,7 @@ export default {
                         name:'基础管理',
                         icon:'el-icon-setting',
                         children:[
-                           /*  {name:'dashboard',url:'/dashboard',title:'首页'}, */
+                            { name: 'dashboard', url: '/dashboard', title: '首页', icon:'el-icon-s-home'},
                             { name: '/page1', url: '/page1', title: '部门管理', icon:'el-icon-house'},
                             { name: '/page2', url: '/page2', title: '人员管理', icon: 'el-icon-user'},
                         ]

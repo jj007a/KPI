@@ -21,7 +21,8 @@
                 <el-input type="password" placeholder="确认密码" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary"  @click="submitForm('ruleForm')">注册</el-button>
+                <el-button type="primary"   @click="submitForm('ruleForm')">注册</el-button>
+                <el-button > <router-link to="/login">去登录</router-link>  </el-button>
                 <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
             </el-form-item>
         </el-form>

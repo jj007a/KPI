@@ -12,9 +12,9 @@
                 <h1 class="fl">绩效考核管理系统</h1>
                 <div class="fr">
                     <ul class="header-person">
-                        <li><span>你好，xxx</span></li>
+                        <li><span>你好，{{$store.getters.name}}</span></li>
                         <li><a href="javascript:;"><i class="el-icon-location"></i>修改密码</a></li>
-                        <li><router-link href="javascript:;" to='/login'> <i class="el-icon-location"></i>退出</router-link></li>
+                        <li @click='loginout'><i class="el-icon-location"></i>退出></li>
                     </ul>
                 </div>
             </div>
@@ -48,6 +48,17 @@ export default {
     data:function(){
         return {}
     },
+    methods:{
+        loginout(){
+            this.$store.dispatch('LoginOut').then(()=>{
+                this.$message({
+                    message:'退出成功',
+                    type:'success'
+                })
+                this.$router.push('/login')
+            })
+        }
+    }
 
 };
 </script>

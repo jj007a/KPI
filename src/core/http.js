@@ -1,70 +1,42 @@
-import axios from 'axios'
-import message from 'element-ui'
-// let params = {appppp:1}
-// axios.defaults.params = Object.assign({}, params)
-// console.log(axios.defaults);
-// axios.defaults.baseURL = 'http://192.168.2.1:3000/'
-// axios.defaults.baseURL = 'http://10.10.16.110:3400/api/'
-const httpService = axios.create({
-    timeout: 3000
-})
-axios.interceptors.response.use((response) => {
-    if(response){
-        if (response.status == 200) {
-            return response.data
-        }
-        if (response.status == 304) {
-            console.log('没权限');
-            return response
-        }
-        if(response.state == '0'){
-            message.Message({
-                showClose: true,
-                message: '请求失败',
-                type: 'error'
-            });
-        }
-    }
-    return response;
-}, function (error) {
-    message.Message({
-        showClose: true,
-        message: '网络原因，请求失败，请检查网络设置',
-        type: 'error'
-    });
-    if (error.response) {
-        // console.error(error);
-    }else{
-        // console.error(error.message);
-    }
-    return {}
+import axios from 'axios';
+import store from '../vuex/store';
+import vue from 'vue';
+// import router from '../router';
+
+// 创建axios实例
+const service = axios.create({
+    // baseURL: process.env.BASE_API, // api的base_url
+    timeout: 5000   ,               // 请求超时时间
+    // headers: {"Content-Type":"applicationy/json"}
 });
 
-export function get(url, params = {}) {
-    return new Promise((resolve, reject) => {
-        httpService({
-            url: url,
-            params: params,
-            method: 'get'
-        }).then(response => {
-            resolve(response)
-        }).catch(erro => {
-            reject(erro)
-        })
-    })
-}
-export function post(url, params = {}) {
-    return new Promise((resolve, reject) => {
-        httpService({
-            url: url,
-            params: params,
-            method: 'post'
-        }).then(response => {
-            resolve(response)
-        }).catch(erro => {
-            reject(erro)
-        })
-    })
-}
+// request拦截器
+service.interceptors.request.use(config => {
+    // Do something before request is sent
+    return config;
+}, error => {
+    // Do something with request error
+    console.log(error); // for debug
+    message.Message({
+        showClose: true,
+        message: error,
+        type: 'error'
+    });
+    Promise.reject(error);
+})
 
-export default axios
+// respone拦截器
+service.interceptors.response.use(
+    response => response,
+    error => {
+        console.log('err' + error);// for debug
+        message.Message({
+            showClose: true,
+            message: error.message,
+            type: 'error'
+        });
+        return Promise.reject(error);
+    }
+)
+
+export default service;

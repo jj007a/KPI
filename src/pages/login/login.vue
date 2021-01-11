@@ -8,7 +8,7 @@
                 <el-input  v-model="ruleForm.user" placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item  prop="pass">
-                <el-input type="password" placeholder="密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
+                <el-input type="password" @keyup.enter.native="submitForm('ruleForm')" placeholder="密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item prop="checked">
                 <el-checkbox v-model="checked">记住用户名</el-checkbox>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import fetch from '@/core/http'
+/* import fetch from '@/core/http' */
  export default {
     data() {
       var validatePass = (rule, value, callback) => {
@@ -64,10 +64,17 @@ import fetch from '@/core/http'
         this.$refs[formName].validate((valid) => {
           console.log(this.ruleForm)
           if (valid) {
-            let url='/api/user/login'
             let params={user:this.ruleForm.user,password:this.ruleForm.pass}
-            fetch({method:'post',url,data:params}).then(res=>{
-              console.log(res)
+            console.log(params)
+            this.$store.dispatch('LoginByTo', params).then(()=>{
+               console.log('登录成功')
+               this.$message({
+                  message: '登录成功',
+                  type: 'success'
+               })
+               this.$router.push({path:'/'})
+            }).catch(()=>{
+                
             })
           } else {
             console.log('error submit!!');
@@ -92,13 +99,17 @@ import fetch from '@/core/http'
 .kpiLogin{
     width: 100%;
     height: 100%;
-    padding-top:200px;
+    position: relative;
+    /* padding-top:200px; */
     background:url('../../assets/loginbg.png');
 }
 .kpiLoginContainer{
   width: 580px;
   height: 520px;
-  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
   padding-top: 56px ;
   background-color: #fff;
 }

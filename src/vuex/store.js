@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import {loginByTo,loginout} from '@/api/login'
+import Cookies from 'js-cookie'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -11,13 +12,17 @@ const store = new Vuex.Store({
         routerName:{},
         // 已有的tab nav
         navTabs:[{title:'首页',name:'dashboard',url:'/dashboard'}],
-        token:''
-
+        token: Cookies.get('Admin-Token'),
+        name: Cookies.get('Admin-Name'),
+        password:'',    
         // filialeJudgeManageAdd数据
         // tree:[],
         // arr:[]
     },
-
+    getters:{
+        token: state => state.token,  
+        name:state=> state.name
+    },
     mutations:{
         setRouterName(state,obj){
             obj = obj || {}
@@ -67,44 +72,49 @@ const store = new Vuex.Store({
             
             
         },
-       
-        // // 将filialeJudgeManageAdd数据转为树的形式
-        // toTree(state,arr){
-        //     let arr1 = [];
-        //     let obj = {}
-        //     arr.forEach((item)=>{
-        //         if(item.span!=0){
-        //             obj = {
-        //                 name1:'123',
-        //                 children:[item]
-        //             }
-        //             arr1.push(obj)
-        //         }else{
-        //             arr1[arr1.length-1].children.push(item)
-        //         }
-        //     })
-        //     state.tree = arr1
-        //     console.log(arr1);
-        // },
-        // // 将filialeJudgeManageAdd数据转为数组的形式
-        // toArray(state,tree){
-        //     var arr = []
-        //     for(let i = 0;i<tree.length;i++){
-        //         let children = tree[i].children
-        //         if(children.length == 0){
-        //             arr.push(children[0])
-        //         }else{
-        //             arr.push(children[0])
-        //             for(let j = 1;j<children.length;j++){
-        //                 children.span=children.length
-        //                 arr.push(children[j])
-        //             }
-        //         }
-        //     };
-        //     console.log(arr);
-            
-        // }
+       SET_TOKEN(state,token){
+         state.token=token       
+        },
+       SET_NAME(state,name){
+         state.name=name       
+        },
+       SET_PASS(state,password){
+         state.password=password       
+        },
+     
     },
+    actions:{
+        // 登录
+        LoginByTo({commit},userInfo) {
+            return new Promise((resolve, reject) => {
+                loginByTo(userInfo.user, userInfo.password).then(response => {
+                    const data = response.data;
+                    console.log(response.data);
+                    if(data.code==200){
+                        Cookies.set('Admin-Token', data.data.token);
+                        Cookies.set('Admin-Name', userInfo.user);
+                        commit('SET_TOKEN', data.data.token);
+                        commit('SET_NAME', userInfo.user);
+                        resolve();
+                    }
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        },
+        //登出
+        LoginOut({commit}){
+            return new Promise((resolve,reject)=>{
+                loginout().then(()=>{
+                    commit('SET_TOKEN','')
+                    Cookies.remove('Admin-Token') 
+                    resolve()     
+                }).catch(erro=>{
+                    reject(erro)
+                })
+            })
+        }
+    }
    
 })
 
