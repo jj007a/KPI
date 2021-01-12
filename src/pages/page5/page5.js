@@ -51,7 +51,7 @@ export default {
             console.log(`当前页: ${val}`);
         },
         open() {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', {
+            this.$confirm('此操作将永久删除, 是否继续?', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

@@ -44,7 +44,8 @@ export default {
                         ]
                     },
                 ]
-                let url = this.$route.path
+                let url = this.$route.path.replace("/detail","")
+                console.log(url)
                 let activeUrl = {}
                 let indexUrl = { name: 'dashboard', url: '/dashboard', title: '首页' }
                 this.routerNavslist.forEach(item => {

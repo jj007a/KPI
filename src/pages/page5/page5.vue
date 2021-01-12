@@ -87,7 +87,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="dialogVisible = true">评分</el-button>
+           > <router-link to='/page5/detail'>评分</router-link> </el-button>
           <el-button
             size="mini"
             type="danger"
@@ -176,9 +176,7 @@ export default {
    color: #000;
    font-size: 14px;
   }
- .personnel .el-table__row .el-table_1_column_5 .cell{ 
-    color: #1890FF;
-  }
+ 
  .personnel .block{ 
     margin-top: 32px;
   }

@@ -6,6 +6,7 @@ import page2 from '../pages/page2/page2.vue'
 import page3 from '../pages/page3/page3.vue'
 import page4 from '../pages/page4/page4.vue'
 import page5 from '../pages/page5/page5.vue'
+import detail from '../pages/page5/Detail.vue'
 
 import notfind from '../pages/notfind/notfind'
 import dashboard from '../pages/dashboard/dashboard'
@@ -75,9 +76,13 @@ const routes=[
             {
                 path: 'page5',
                 name: 'page5',
-                component: page5
+                component: page5,
             },
-           
+            {
+                path: 'page5/detail',
+                name: 'detail',
+                component: detail
+            }
 
         ]
     },

@@ -13,7 +13,14 @@
             <el-input v-model="formLabelAlign.name"></el-input>
           </el-form-item>
           <el-form-item label="部门：">
-            <el-input v-model="formLabelAlign.name"></el-input>
+            <el-select v-model="formLabelAlign.bumen" placeholder="请选择">
+              <el-option
+                v-for="item in formLabelAlign.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="职位：">
             <el-input v-model="formLabelAlign.name"></el-input>
@@ -155,6 +162,9 @@ export default {
     width: 200px;
   }
  .personnel .divMain .el-form-item:last-child .el-form-item__content{
+    width: 100%;
+  }
+ .propBox .el-select{
     width: 100%;
   }
  .personnel .divMain .el-input__inner{
