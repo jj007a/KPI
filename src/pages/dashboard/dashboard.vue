@@ -49,7 +49,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-           > <router-link to='/page5/detail'>查看</router-link> </el-button>
+           > <router-link to='/dashboard/view'>查看</router-link> </el-button>
           <el-button
             type="primary"
             @click='outExe'

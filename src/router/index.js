@@ -7,6 +7,7 @@ import kpiTemplate from '../pages/KPITemplate/KPITemplate.vue'
 import kpiSetting from '../pages/KPISetting/KPISetting.vue'
 import kpiScore from '../pages/KPIScore/KPIScore.vue'
 import detail from '../pages/KPIScore/Detail.vue'
+import view from '../pages/dashboard/view'
 
 import notfind from '../pages/notfind/notfind'
 import dashboard from '../pages/dashboard/dashboard'
@@ -45,7 +46,7 @@ const routes=[
                 meta: {
                     requireAuth: true,
                 },
-                component: dashboard
+                component: dashboard,
             },
             {
                 path: 'department',
@@ -82,8 +83,8 @@ const routes=[
                 path: 'KPiScore/detail',
                 name: 'detail',
                 component: detail
-            }
-
+            },
+            { path: '/dashboard/view', name: 'view', component: view }
         ]
     },
 
