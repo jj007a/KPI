@@ -169,9 +169,9 @@
 </template>
 
 <script>
-import Page4 from "./page4";
+import KPISetting from "./KPISetting";
 export default {
-  ...Page4
+  ...KPISetting
 }
 </script>
 <style >

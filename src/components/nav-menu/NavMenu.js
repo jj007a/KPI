@@ -5,7 +5,7 @@ export default {
             routerNavslist:[],
             routerName: {},
             isCollapse:false,
-            defaultActiveNow:'dashboard'
+            defaultActiveNow:''
         }
     },
     methods: {
@@ -30,17 +30,17 @@ export default {
                         icon:'el-icon-setting',
                         children:[
                             { name: 'dashboard', url: '/dashboard', title: '首页', icon:'el-icon-s-home'},
-                            { name: '/page1', url: '/page1', title: '部门管理', icon:'el-icon-house'},
-                            { name: '/page2', url: '/page2', title: '人员管理', icon: 'el-icon-user'},
+                            { name: '/department', url: '/department', title: '部门管理', icon:'el-icon-house'},
+                            { name: '/personnel', url: '/personnel', title: '人员管理', icon: 'el-icon-user'},
                         ]
                     },
                     {
                         name:'考核管理',
                         icon: 'el-icon-document-copy',
                         children:[
-                            { name: '/page3', url: '/page3', title: '绩效考核模板', icon: 'el-icon-document-checked'},
-                            { name: '/page4', url: '/page4', title: '绩效考核设置', icon: 'el-icon-setting'},
-                            { name: '/page5', url: '/page5', title: '绩效考核评分', icon: 'el-icon-edit'},
+                            { name: '/KPITemplate', url: '/KPITemplate', title: '绩效考核模板', icon: 'el-icon-document-checked'},
+                            { name: '/KPISetting', url: '/KPISetting', title: '绩效考核设置', icon: 'el-icon-setting'},
+                            { name: '/KPiScore', url: '/KPiScore', title: '绩效考核评分', icon: 'el-icon-edit'},
                         ]
                     },
                 ]
@@ -69,4 +69,5 @@ export default {
     created(){
         this.getData()
     }
+
 }

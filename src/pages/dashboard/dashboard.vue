@@ -34,11 +34,11 @@
             width="180">
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="endDate"
             label="结束时间">
           </el-table-column>
           <el-table-column
-            prop="proson"
+            prop="cycle"
             label="周期">
           </el-table-column>
           <el-table-column
@@ -52,6 +52,7 @@
            > <router-link to='/page5/detail'>查看</router-link> </el-button>
           <el-button
             type="primary"
+            @click='outExe'
            > 下载 </el-button>
          
         </template>
@@ -83,26 +84,35 @@ export default {
             },
             tableData: [
                 {
-                    date: '网络',
+                    date: '2021-01-13',
                     name: '王小虎',
-                    address: '前端',
+                    endDate: '2021-01-31',
                     proson: '职员',
-                    // action:'修改'
+                    cycle: '月',
                 },
                 {
-                    date: '网络',
+                    date: '2021-01-13',
                     name: '王小虎',
-                    address: '前端',
+                    endDate: '2021-01-31',
                     proson: '职员',
-                    // action:'修改'
+                    cycle: '月',
                 },
                 {
-                    date: '网络',
+                    date: '2021-01-13',
                     name: '王小虎',
-                    address: '前端',
+                    endDate: '2021-01-31',
                     proson: '职员',
-                    // action:'修改'
+                    cycle: '月',
                 },
+                {
+                    date: '2021-01-13',
+                    name: '王小虎',
+                    endDate: '2021-01-31',
+                    proson: '职员',
+                    cycle: '月',
+                },
+               
+               
 
             ],
             value: false,
@@ -124,6 +134,39 @@ export default {
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
         },
+        outExe() {
+            this.$confirm('此操作将导出excel文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.excelData = this.tableData //你要导出的数据list。
+                this.export2Excel()
+            }).catch(() => {
+            
+            });
+        },
+        export2Excel() {
+            var that = this;
+            require.ensure([], () => {
+                const { export_json_to_excel } = require('../../excel/Export2Excle'); //这里必须使用绝对路径
+                const tHeader = ['模板','开始时间', '结束时间', '周期','成员']; // 导出的表头名
+                const filterVal = ['name','date','endDate', 'cycle','proson']; // 导出的表头字段名
+                const list = that.excelData;
+                const data = that.formatJson(filterVal, list);
+                let time1,time2 = '';
+                if(this.date !== '') {
+                    time1 = that.$moment(that.date).format('YYYY-MM-DD')
+                }
+                if(this.endDate !== '') {
+                    time2 = that.$moment(that.endDate).format('YYYY-MM-DD')
+                }
+                export_json_to_excel(tHeader, data, `[${time1}-${time2}]绩效考核`);// 导出的表格名称，根据需要自己命名
+            })
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v => filterVal.map(j => v[j]))
+        }
   }
 }
 </script>

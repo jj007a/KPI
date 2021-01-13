@@ -60,6 +60,12 @@
       };
     },
     methods: {
+      rememberUser(){
+        if(localStorage.getItem('SET_Admin')){
+          this.checked=true;
+          this.ruleForm.user=this.$store.getters.name
+        }
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           console.log(this.ruleForm)
@@ -72,6 +78,12 @@
                   message: '登录成功',
                   type: 'success'
                })
+               if(this.checked){
+                  localStorage.setItem('SET_Admin',true)
+               }else{
+                  localStorage.removeItem('SET_Admin')
+               }
+             
                this.$router.push({path:'/'})
             }).catch(()=>{
                 
@@ -82,6 +94,9 @@
           }
         });
       },
+    },
+    created(){
+      this.rememberUser()
     }
   }
 </script>

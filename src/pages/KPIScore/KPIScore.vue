@@ -112,9 +112,9 @@
 </template>
 
 <script>
-import Page5 from "./page5";
+import KPIScore from "./KPIScore";
 export default {
-  ...Page5
+  ...KPIScore
 }
 </script>
 <style >

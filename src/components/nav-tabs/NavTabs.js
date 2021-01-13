@@ -11,6 +11,7 @@ export default {
         // 点自己，跳转到对应的路由的页面
         jumpToTab() {
            this.$router.push({path:this.activeTab})
+            this.$store.state.defaultActiveNow = this.activeTab
         },
         // 移除tab
         removeTab(targetName) {

@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import store from '../vuex/store'
 import Router from 'vue-router'
-import page1 from '../pages/page1/page1.vue'
-import page2 from '../pages/page2/page2.vue'
-import page3 from '../pages/page3/page3.vue'
-import page4 from '../pages/page4/page4.vue'
-import page5 from '../pages/page5/page5.vue'
-import detail from '../pages/page5/Detail.vue'
+import department from '../pages/department/department.vue'
+import personnel from '../pages/personnel/personnel.vue'
+import kpiTemplate from '../pages/KPITemplate/KPITemplate.vue'
+import kpiSetting from '../pages/KPISetting/KPISetting.vue'
+import kpiScore from '../pages/KPIScore/KPIScore.vue'
+import detail from '../pages/KPIScore/Detail.vue'
 
 import notfind from '../pages/notfind/notfind'
 import dashboard from '../pages/dashboard/dashboard'
@@ -48,38 +48,38 @@ const routes=[
                 component: dashboard
             },
             {
-                path: 'page1',
-                name: 'page1',
+                path: 'department',
+                name: 'department',
                 meta: {
                     requireAuth: true,
                 },
-                component: page1
+                component: department
             },
             {
-                path: 'page2',
-                name: 'page2',
+                path: 'personnel',
+                name: 'personnel',
                 meta: {
                     requireAuth: true,
                 },
-                component: page2
+                component: personnel
             },
             {
-                path: 'page3',
-                name: 'page3',
-                component: page3
+                path: 'KPITemplate',
+                name: 'KPITemplate',
+                component: kpiTemplate
             },
             {
-                path: 'page4',
-                name: 'page4',
-                component: page4
+                path: 'KPISetting',
+                name: 'KPISetting',
+                component: kpiSetting
             },
             {
-                path: 'page5',
-                name: 'page5',
-                component: page5,
+                path: 'KPIScore',
+                name: 'KPIScore',
+                component: kpiScore,
             },
             {
-                path: 'page5/detail',
+                path: 'KPiScore/detail',
                 name: 'detail',
                 component: detail
             }

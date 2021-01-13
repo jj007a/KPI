@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import Page1 from "./page1";
+import Department from "./department";
 export default {
-  ...Page1
+  ...Department
 }
 </script>
 

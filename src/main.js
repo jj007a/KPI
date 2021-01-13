@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import 'element-ui/lib/theme-chalk/index.css'
+import Blob from './excel/Blob'
+import excle from './excel/Export2Excle'
 // import './theme/index.css'
 import ElementUI from 'element-ui'
 import http from './core/http';
@@ -13,6 +15,9 @@ import filterJson from './filters/filterJson'
 // 状态管理
 import Vuex from 'vuex'
 import store from './vuex/store'
+import moment from 'moment'//导入文件 
+
+Vue.prototype.$moment = moment;//赋值使用
 // 阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false
 

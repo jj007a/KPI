@@ -76,9 +76,9 @@
 </template>
 
 <script>
-import Page3 from "./page3";
+import KPITemplate from "./KPITemplate";
 export default {
-  ...Page3
+  ...KPITemplate
 }
 </script>
 

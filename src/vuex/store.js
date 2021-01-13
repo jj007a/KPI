@@ -14,14 +14,11 @@ const store = new Vuex.Store({
         navTabs:[{title:'首页',name:'dashboard',url:'/dashboard'}],
         token: Cookies.get('Admin-Token'),
         name: Cookies.get('Admin-Name'),
-        password:'',    
-        // filialeJudgeManageAdd数据
-        // tree:[],
-        // arr:[]
+        password:'', 
     },
     getters:{
         token: state => state.token,  
-        name:state=> state.name
+        name:state=> state.name,
     },
     mutations:{
         setRouterName(state,obj){

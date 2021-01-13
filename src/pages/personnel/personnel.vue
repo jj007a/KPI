@@ -107,9 +107,9 @@
 </template>
 
 <script>
-import Page2 from "./page2";
+import Personnel from "./personnel";
 export default {
-  ...Page2
+  ...Personnel
 }
 </script>
 <style >
