@@ -94,7 +94,7 @@ const router=new Router({
     routes,
     // mode:"history"
 })
-router.beforeEach((to, from, next) => {
+/* router.beforeEach((to, from, next) => {
     if(store.getters.token){
         console.log(store.getters.token,'23')
         if(to.path=='/login'){
@@ -109,7 +109,7 @@ router.beforeEach((to, from, next) => {
            next({ path: '/login' })
        }
     }
-})
+}) */
     
 
 export default router

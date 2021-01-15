@@ -87,7 +87,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-           > <router-link to='/page5/detail'>评分</router-link> </el-button>
+           > <router-link to='/kpiScore/detail'>评分</router-link> </el-button>
           <el-button
             size="mini"
             type="danger"

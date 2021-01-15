@@ -9,7 +9,10 @@
             <el-table
         border
         :data="forms.tableData"
+        show-summary
         style="width:100%"
+        sum-text='总分'
+        span-method	="getSummaries"
         height="600">
         <el-table-column
         fixed
@@ -17,6 +20,13 @@
         label="考核内容"
         width="500"
         >
+        
+        </el-table-column>
+         <el-table-column
+        fixed
+        prop="department"
+        label="部门"
+        width="100">
         </el-table-column>
         <el-table-column
         fixed
@@ -24,12 +34,7 @@
         label="总分"
         width="50">
         </el-table-column>
-        <el-table-column
-        fixed
-        prop="department"
-        label="部门"
-        width="100">
-        </el-table-column>
+       
         <el-table-column
         v-for='item in forms.tableData'
         prop='num'
@@ -57,7 +62,7 @@
             <div class="button_bottom">
              <el-form-item>
                   <el-button type="primary" @click="submitForm('forms')">提交</el-button>
-                  <el-button >考核 结束</el-button>
+                  <el-button >返回</el-button>
                 </el-form-item>
             </div>
         </el-form>
@@ -96,21 +101,21 @@
                     {
                         content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
                         name: '王小虎',
-                        num: '10',
+                        num: '7',
                         department: '网络',
                         Assessor: 'Tom',
                     },
                     {
                         content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
                         name: '王小虎',
-                        num: '10',
+                        num: '5',
                         department: '网络',
                         Assessor: 'Tom',
                     },
                     {
                         content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
                         name: '王小虎',
-                        num: '10',
+                        num: '8',
                         department: '网络',
                         Assessor: 'Tom',
                     },
@@ -142,7 +147,17 @@
     components: {},
 
     methods: {
-        
+        getsummarier(params){
+          const {columns,data}=params;
+          const sum=[];
+          columns.forEach((column,index)=>{
+            if(index==0){
+              sums[index]='总分';
+              return;
+            }
+          })
+
+        }
     }
 }
 
@@ -229,4 +244,8 @@
   .propBox .el-form{
     width: 90%;
   }
+
+.el-table__fixed-body-wrapper{
+  height: 500px!important;
+}
 </style>

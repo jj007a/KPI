@@ -248,9 +248,6 @@ export default {
    color: #000;
    font-size: 14px;
   }
- .personnel .el-table__row .el-table_1_column_5 .cell{ 
-    color: #1890FF;
-  }
  .personnel .block{ 
     margin-top: 32px;
   }

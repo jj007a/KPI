@@ -158,4 +158,7 @@
   .propBox .el-form{
     width: 90%;
   }
+  
+flow: visible;
+
 </style>

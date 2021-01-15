@@ -19,6 +19,14 @@ module.exports = {
               '^/api':''
             }        
           }, 
+          '/kpi':{
+            target:'http://tth:80',
+            secure:true,
+            changeOrigin:true,
+            pathReweite:{
+              '^/kpi':''
+            }
+          }
     },
 
     // Various Dev Server settings

@@ -6,6 +6,8 @@ import router from './router'
 import 'element-ui/lib/theme-chalk/index.css'
 import Blob from './excel/Blob'
 import excle from './excel/Export2Excle'
+// import axios from './core/http';
+import qs from 'qs'
 // import './theme/index.css'
 import ElementUI from 'element-ui'
 import http from './core/http';
@@ -18,6 +20,8 @@ import store from './vuex/store'
 import moment from 'moment'//导入文件 
 
 Vue.prototype.$moment = moment;//赋值使用
+Vue.prototype.$qs = qs
+// Vue.prototype.$axios = axios
 // 阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false
 
