@@ -78,6 +78,7 @@ const store = new Vuex.Store({
        SET_PASS(state,password){
          state.password=password       
         },
+        
      
     },
     actions:{
@@ -110,7 +111,7 @@ const store = new Vuex.Store({
                     reject(erro)
                 })
             })
-        }
+        },
     }
    
 })

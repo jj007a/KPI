@@ -3,36 +3,40 @@
     <div class="personnel">
       <div class="personnelContent">
         <el-dialog
-        title="添加员工信息"
+        :title="propTitle"
         :visible.sync="dialogVisible"
         width="40%"
        >
        <div class="propBox">
-        <el-form  label-width="80px" :model="formLabelAlign">
+        <el-form  label-width="80px" :model="tableData">
           <el-form-item label="姓名：">
-            <el-input v-model="formLabelAlign.name"></el-input>
+            <el-input v-model="tableData.realName"></el-input>
           </el-form-item>
           <el-form-item label="部门：">
-            <el-select v-model="formLabelAlign.bumen" placeholder="请选择">
+            <el-select v-model="tableData.department.id" placeholder="请选择">
               <el-option
-                v-for="item in formLabelAlign.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in departmentData"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="职位：">
-            <el-input v-model="formLabelAlign.name"></el-input>
+            <el-input v-model="tableData.position"></el-input>
           </el-form-item>
           <el-form-item label="角色：">
-            <el-input v-model="formLabelAlign.name"></el-input>
+            <el-input v-model="tableData.username"></el-input>
           </el-form-item>
         </el-form>
        </div>
        
-        <span slot="footer" class="dialog-footer">
-           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <span slot="footer" class="dialog-footer" v-if="addShow">
+           <el-button type="primary" @click="addPerson">确 定</el-button>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+        </span>
+        <span slot="footer" class="dialog-footer" v-if="editShow">
+           <el-button type="primary" @click="editPerson">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>
@@ -58,24 +62,24 @@
         </el-form>
         </div>
         <el-table
-          :data="tableData"
+          :data="personList"
           style="width: 100%">
           <el-table-column
-            prop="name"
+            prop="realName"
             label="姓名"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="date"
+            prop="department.name"
             label="部门"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="position"
             label="职位">
           </el-table-column>
           <el-table-column
-            prop="proson"
+            prop="username"
             label="角色">
           </el-table-column>
           <el-table-column label="操作">
@@ -97,7 +101,7 @@
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
+            :page-size="pageable.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="40">
           </el-pagination>

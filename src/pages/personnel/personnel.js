@@ -7,58 +7,168 @@ export default {
                 region: '',
                 
             },
-            tableData: [
-                {
-                    date: '网络',
-                    name: '王小虎',
-                    address: '前端',
-                    proson: '职员',
-                    // action:'修改'
+            departmentData: [],
+            tableData: {
+                department: {
+                    id: "",
+                   /*  manager: "",
+                    name: "", */
                 },
-                
-            ],
+                /* id: "", */
+                realName: "",
+                position:"",
+               /*  roles: [
+                    {
+                        id: "",
+                        permissions: [
+                            {
+                                id: 0,
+                                permCode: string,
+                                permName: string,
+                                requestPath: string,
+                                rolePermissions: [
+                                    {
+                                        id: 0
+                                    }
+                                ]
+                            }
+                        ],
+                        roleName: string
+                    }
+                ], */
+                // serialNumber: string,
+                username: ""
+            },
             value: false,
-            currentPage4: 4,
+            currentPage4: 1,
             dialogVisible: false,
-            formLabelAlign: {
-                name: '',
-                region: '',
-                type: '',
-                options: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
-                }],
-                bumen: ''
+            personList: [],
+            editShow:false,
+            addShow:true,
+            propTitle:"添加人员",
+            pageable:{
+                pageNumber:1,
+                pageSize:20
             }
         }
 
     },
+    created() {
+        this.getDepartment()
+        this.personInfo()
+    },
     methods: {
         handleEdit(index, row) {
             console.log(index, row);
+            this.dialogVisible=true
+            this.$http.get('kpi/auth/user/detail',{id:row.id}).then(res=>{
+                this.tableData=res.data.data
+                this.addShow = false;
+                this.editShow = true;
+                this.propTitle='编辑人员'
+            })
+
         },
         handleDelete(index, row) {
-            console.log(index, row);
+            this.$confirm('此操作将永久删除模板, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$http.post('kpi/auth/user/delete', { id: row.id }).then(res => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.personInfo()
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
         },
         handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
+            this.pageable.pageSize = val
+            this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
+                console.log(res)
+                this.personList = res.data.data.data
+                // this.pageable = res.pageable
+            })
         },
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
-        }
-
+            this.pageable.pageNumber=val
+            this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
+                console.log(res)
+                this.personList = res.data.data.data
+                // this.pageable = res.pageable
+            })
+        },
+        //初始化人员数据
+        personInfo(){
+            this.$http.get('kpi/auth/user/list',this.pageable).then(res=>{
+                console.log(res)
+                this.personList=res.data.data.data
+                this.pageable=res.data.data.pageable
+            })
+        },
+        // 获取部门数据
+        getDepartment() {
+            this.$http.get(
+                'kpi/auth/dep/all',
+            ).then(res => {
+                console.log(res)
+                this.departmentData = res.data.data
+            }).catch(erro => {
+                this.$message({
+                    message: erro.message,
+                    type: 'error'
+                })
+            })
+        },
+        // 添加
+        addPerson(){
+            this.$http.post('kpi/auth/user/save',
+            JSON.stringify(this.tableData) ).then((res)=>{
+                console.log(res)
+                if(res.status==200){
+                    this.dialogVisible=false
+                    this.tableData= {
+                        department: {
+                            id: "",
+                        },
+                            realName: "",
+                            position: "",
+                            username: ""
+                    }
+                    this.personInfo()
+                }
+            })
+        },
+        // 编辑
+        editPerson(){
+            this.$http.post('kpi/auth/user/update',
+            JSON.stringify(this.tableData) ).then((res)=>{
+                console.log(res)
+                if(res.status==200){
+                    this.dialogVisible=false
+                    this.tableData= {
+                        department: {
+                            id: "",
+                        },
+                            realName: "",
+                            position: "",
+                            username: ""
+                    }
+                    this.addShow=true;
+                    this.editShow=false;
+                    this.propTitle='添加人员'
+                    this.personInfo()
+                }
+            })
+        },
 
     },
 

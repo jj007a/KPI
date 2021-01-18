@@ -1,7 +1,7 @@
 <template>
    <div class="KPITemplate">
       <div class="KPITemplateContent">
-        <h1>{{header}}</h1>
+        <h1>绩效考核模板</h1>
         <div class="divMain">
             <el-form :model="dynamicValidateForm" ref="dynamicValidateForm"  class="demo-dynamic">
                 <div class="selectDep">
@@ -54,51 +54,157 @@
                   <el-input v-model="mouldItem.score" placeholder="单项考核分数"></el-input><el-button @click.prevent="removeDomain(mouldItem)">删除</el-button>
                 </el-form-item>
                 </div>
-                <el-form-item v-if='isSave'>
+                <el-form-item>
                   <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
                   <el-button @click="addDomain">新增考核项目</el-button>
                 </el-form-item>
-                <el-form-item v-if='isView'>
-                  <!-- <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button> -->
-                  <el-button @click="$router.go(0)">返回</el-button>
-                </el-form-item>
-                <el-form-item v-if='isEdit'>
-                  <el-button type="primary" @click="editForm('dynamicValidateForm')">提交</el-button>
-                  <el-button @click="moudelBack">返回</el-button>
-                </el-form-item>
             </el-form>
         </div>
-      </div>
-      <div class="KPITemplateContentRight" >
-          <el-card class="box-card"  v-for="item in KpiMouldList" :key="item.id">
-            <div slot="header" class="clearfix">
-              <span>{{item.mouldName?item.mouldName:'暂时数据'}}({{item.totalScore?item.totalScore:0+'分'}})</span>
-              <el-button style="float: right; padding: 3px 0" type="text" >
-                <el-dropdown  @command="editKpiMould">
-                <span class="el-dropdown-link">
-                  <i class="el-icon-arrow-down el-icon-more"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="{id:item.id,value:'edit'}">编辑</el-dropdown-item>
-                  <el-dropdown-item :command="{id:item.id,value:'view'}">查看</el-dropdown-item>
-                  <el-dropdown-item :command="item.id">删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              </el-button>
-            </div>
-            <div>创建时间 : {{item.createdDate}}</div>
-            <div v-for="(o,index) in item.kpiMouldItems" :key="o.index" class="text item" v-if="index<=1">
-              {{o.kpiName}}  : <span style="color:red">{{o.score}}分</span>
-            </div>
-          </el-card>
       </div>
     </div>
 </template>
 
 <script>
-import KPITemplate from "./KPITemplate";
 export default {
-  ...KPITemplate
+    data() {
+        return {
+            formInline: {
+                user: '',
+                region: ''
+            },
+            tableData: {},
+            value: false,
+            currentPage4: 4,
+            dynamicValidateForm: {
+                department:{
+                    id:""
+                },
+                id:"",
+                kpiMouldItems: [{
+                    kpiName: '',
+                    score:''
+                }],
+                mouldName: '',
+                totalScore: ''
+            },
+            KpiMouldList:[],
+            editData: {
+                createdDate: '',
+                manager: '',
+                name: '',
+                id: ''
+            },
+            viewData: {
+                department: {
+                    id: "",
+                    name:"",
+                    manager:"",
+                },
+                id: "",
+                kpiMouldItems: [{
+                    kpiName: '',
+                    score: ''
+                }],
+                mouldName: '',
+                totalScore: ''
+            },
+            dialogVisible: false,
+            dialogViewProp: false,
+        }
+    },
+    created() {
+        this.getDepartment()
+        this.getKpiMouldInfo()
+    },
+    methods: {
+        removeDomain(item) {
+            var index = this.dynamicValidateForm.kpiMouldItems.indexOf(item)
+            if (index !== -1) {
+                this.dynamicValidateForm.kpiMouldItems.splice(index, 1)
+            }
+        },
+        addDomain() {
+            this.dynamicValidateForm.kpiMouldItems.push({
+                kpiName: '',
+                score:'',
+            });
+        },
+        editKpiMould(a){
+            console.log(a)
+            if (a.value == 'edit'){
+                this.dialogVisible = true
+            }else if(a.value=='view'){
+                this.dialogViewProp=true
+                this.$http.get('kpi/auth/mould/detail',{id:a.id}).then(res=>{
+                    this.viewData = res.data.data
+                })
+            }else{
+                this.$confirm('此操作将永久删除模板, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                   console.log(a,'csd')
+                    this.$http.post('kpi/auth/mould/delete',{id:a}).then(res=>{
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getKpiMouldInfo()
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            }
+            
+        },
+        getKpiMouldInfo(){
+            this.$http.get('kpi/auth/mould/list').then(res=>{
+                console.log(res)
+                this.KpiMouldList=res.data.data
+            })
+        },
+        getDepartment() {
+            this.$http.get(
+                'kpi/auth/dep/all',
+            ).then(res => {
+                console.log(res)
+                this.tableData = res.data.data
+            }).catch(erro => {
+                this.$message({
+                    message: erro.message,
+                    type: 'error'
+                })
+            })
+
+        },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    console.log(this.dynamicValidateForm)    
+                    this.$http.post('kpi/auth/mould/save', 
+                    JSON.stringify(this.dynamicValidateForm)).then(res=>{
+                        console.log(res)
+                        if(res.status==200){
+                            this.$message({
+                                type:'success',
+                                message:'模板添加成功'
+                            })
+                            this.getKpiMouldInfo()
+                            this.$refs[formName].resetFields();
+                        }
+                        
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+    }
 }
 </script>
 
