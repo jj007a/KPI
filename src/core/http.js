@@ -84,7 +84,6 @@ service.interceptors.response.use(
 )
 export function get(url, params = {}) {
     return new Promise((resolve, reject) => {
-        console.log(params)
         service({
             url: url,
             method: 'get',

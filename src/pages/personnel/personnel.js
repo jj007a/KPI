@@ -48,8 +48,9 @@ export default {
             propTitle:"添加人员",
             pageable:{
                 pageNumber:1,
-                pageSize:20
-            }
+                pageSize:10
+            },
+            totals:40
         }
 
     },
@@ -59,7 +60,6 @@ export default {
     },
     methods: {
         handleEdit(index, row) {
-            console.log(index, row);
             this.dialogVisible=true
             this.$http.get('kpi/auth/user/detail',{id:row.id}).then(res=>{
                 this.tableData=res.data.data
@@ -69,6 +69,7 @@ export default {
             })
 
         },
+        // 删除
         handleDelete(index, row) {
             this.$confirm('此操作将永久删除模板, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -89,19 +90,19 @@ export default {
                 });
             });
         },
+        // 显示一页数量
         handleSizeChange(val) {
             this.pageable.pageSize = val
             this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
-                console.log(res)
                 this.personList = res.data.data.data
                 // this.pageable = res.pageable
             })
         },
+        // 分页
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
             this.pageable.pageNumber=val
             this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
-                console.log(res)
                 this.personList = res.data.data.data
                 // this.pageable = res.pageable
             })
@@ -112,6 +113,8 @@ export default {
                 console.log(res)
                 this.personList=res.data.data.data
                 this.pageable=res.data.data.pageable
+                console.log(res.data.data.total)
+                this.totals = res.data.data.total
             })
         },
         // 获取部门数据
@@ -119,7 +122,6 @@ export default {
             this.$http.get(
                 'kpi/auth/dep/all',
             ).then(res => {
-                console.log(res)
                 this.departmentData = res.data.data
             }).catch(erro => {
                 this.$message({
@@ -132,7 +134,6 @@ export default {
         addPerson(){
             this.$http.post('kpi/auth/user/save',
             JSON.stringify(this.tableData) ).then((res)=>{
-                console.log(res)
                 if(res.status==200){
                     this.dialogVisible=false
                     this.$message({
@@ -155,7 +156,6 @@ export default {
         editPerson(){
             this.$http.post('kpi/auth/user/update',
             JSON.stringify(this.tableData) ).then((res)=>{
-                console.log(res)
                 if(res.status==200){
                     this.dialogVisible=false;
                     this.$message({

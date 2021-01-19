@@ -68,7 +68,6 @@
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          console.log(this.ruleForm)
           if (valid) {
             let params={user:this.ruleForm.user,password:this.ruleForm.pass}
             console.log(params)

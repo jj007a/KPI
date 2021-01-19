@@ -29,7 +29,6 @@ export default {
         handleEdit(index, row) {
             this.dialogVisible=true  
             this.$http.get('kpi/auth/dep/detail',{id:row}).then(res=>{
-                console.log(res)
                 this.editData=res.data.data
             })
         },
@@ -40,13 +39,11 @@ export default {
                 name: this.editData.name,
             }
             this.$http.post('kpi/auth/dep/update',data).then(res=>{
-                console.log(res)
                 this.dialogVisible = false;
                 this.getDepartment()
             })
         },
         handleDelete(index, row) {
-            console.log(index, row);
             this.$http.post('kpi/auth/dep/delete', { id: row}).then(res=>{
                 this.$message({
                     message: '删除成功',
@@ -58,12 +55,10 @@ export default {
         getDepartment(){
             console.log(123)
             var params =JSON.stringify( { pageNumber: 1, pageSize: 10})
-            console.log(params)
             this.$http.get(
                 'kpi/auth/dep/list',
                 params
             ).then(res=>{
-                console.log(res)
                 this.tableData=res.data.data
             }).catch(erro=>{
                 this.$message({
@@ -77,7 +72,6 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             // this.$http.
-             console.log(this.departmentForm.name,this.departmentForm.manager)
               let data = {
                   manager: this.departmentForm.manager,
                   name: this.departmentForm.name,

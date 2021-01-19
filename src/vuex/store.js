@@ -24,14 +24,12 @@ const store = new Vuex.Store({
         setRouterName(state,obj){
             obj = obj || {}
             for (const key in obj) {
-                console.log(obj[key])
                 if(typeof obj[key] == 'string'){
                     obj[key].replace('Detail','')
                 }
             }
             state.routerName = obj;
             
-            console.log(obj);
             
             let flag = state.navTabs.find(item=>item.url == obj.url)
             if(!flag){
@@ -87,7 +85,6 @@ const store = new Vuex.Store({
             return new Promise((resolve, reject) => {
                 loginByTo(userInfo.user, userInfo.password).then(response => {
                     const data = response.data;
-                    console.log(response.data);
                     if(data.code==200){
                         Cookies.set('Admin-Token', data.data.token);
                         Cookies.set('Admin-Name', userInfo.user);

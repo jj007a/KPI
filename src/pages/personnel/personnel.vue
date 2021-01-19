@@ -103,7 +103,7 @@
             :page-sizes="[10, 20, 30, 40]"
             :page-size="pageable.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="40">
+            :total="totals">
           </el-pagination>
         </div>
       </div>

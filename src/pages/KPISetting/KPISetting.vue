@@ -8,43 +8,46 @@
         width="40%"
        >
        <div class="propBox">
-        <el-form  label-width="90px" :model="formLabelAlign">
+        <el-form  label-width="90px" :model="tableData" ref="tableData">
           <el-form-item label="考核模板：">
-             <el-select v-model="formLabelAlign.region" placeholder="请选择模板" style="width: 100%;">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+             <el-select v-model="tableData.kpiMouldId" placeholder="请选择模板" style="width: 100%;" >
+                <el-option v-for="item in moudle" :key="item.id"
+                :label="item.mouldName" :value="item.id"></el-option>
               </el-select>
           </el-form-item>
           <el-form-item label="考核时间：">
              <el-col :span="11">
-                <el-date-picker type="date" placeholder="开始时间" v-model="formLabelAlign.date1" style="width: 100%;"></el-date-picker>
+                <el-date-picker type="date" placeholder="开始时间" value-format='yyyy-MM-dd HH:mm:ss' v-model="tableData.startDate" style="width: 100%;"></el-date-picker>
               </el-col>
               <el-col class="line" :span="2">-</el-col>
               <el-col :span="11">
-                <el-date-picker type="date" placeholder="结束时间" v-model="formLabelAlign.date2" style="width: 100%;"></el-date-picker>
+                <el-date-picker type="date" placeholder="结束时间" value-format='yyyy-MM-dd HH:mm:ss' v-model="tableData.endDate" style="width: 100%;"></el-date-picker>
               </el-col>
           </el-form-item>
           <el-form-item label="考核周期：">
-             <el-select v-model="formLabelAlign.cycle" placeholder="请选择周期" style="width: 100%;">
-                <el-option label="周" value="week"></el-option>
-                <el-option label="月" value="month"></el-option>
-                <el-option label="年" value="year"></el-option>
+             <el-select v-model="tableData.kpiCategory" placeholder="请选择周期" style="width: 100%;">
+                <el-option v-for="(val,key) in categoryList" :key="key"  :label="val" :value="key"></el-option>
+                
               </el-select>
           </el-form-item>
           <el-form-item label="考核对象：">
-              <el-select v-model="formLabelAlign.objects" multiple placeholder="请选择" style="width: 100%;">
+              <el-select v-model="tableData.userIds" multiple placeholder="请选择" style="width: 100%;" @change="dataUpdate">
                 <el-option
                   v-for="item in formLabelAlign.options"
-                  :key="item.vlaue"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.realName"
+                  :value="item.id">
                 </el-option>
               </el-select>
           </el-form-item>
         </el-form>
        </div>
-        <span slot="footer" class="dialog-footer">
-           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <span slot="footer" class="dialog-footer" v-if="isAdd">
+           <el-button type="primary" @click.prevent="submitForm('tableData')">确 定</el-button>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+        </span>
+        <span slot="footer" class="dialog-footer" v-if="isEdit">
+           <el-button type="primary" @click.prevent="edit">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
         </el-dialog>
@@ -111,44 +114,47 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" >查询</el-button>
-              <el-button type="primary" @click="dialogVisible = true">添加绩效</el-button>
+              <el-button type="primary" @click="addProp">添加绩效</el-button>
             </el-form-item>
         </el-form>
         </div>
         <el-table
-          :data="tableData"
+          :data="assignmentList"
           style="width: 100%">
           <el-table-column
-            prop="name"
+            prop="kpiMouldName"
             label="模板"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="date"
+            prop="startDate"
             label="开始时间"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="endDate"
             label="结束时间">
           </el-table-column>
           <el-table-column
-            prop="proson"
+            prop="kpiCategory"
             label="周期">
           </el-table-column>
-          <el-table-column
-            prop="proson"
+          <el-table-column 
+            prop="users"
             label="成员">
+            <template slot-scope="scope">
+                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index<3">{{(index>=2)?item.realName+"...":item.realName+","}}</span>
+            </template>
           </el-table-column>
           <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="dialogEditVisible=true">编辑</el-button>
+            @click="viewDetail(scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="open">删除</el-button>
+            @click="del(scope.row)">删除</el-button>
         </template>
       </el-table-column>
         </el-table>
