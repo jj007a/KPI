@@ -135,6 +135,10 @@ export default {
                 console.log(res)
                 if(res.status==200){
                     this.dialogVisible=false
+                    this.$message({
+                        type: 'success',
+                        message: '添加成功'
+                    });
                     this.tableData= {
                         department: {
                             id: "",
@@ -153,7 +157,11 @@ export default {
             JSON.stringify(this.tableData) ).then((res)=>{
                 console.log(res)
                 if(res.status==200){
-                    this.dialogVisible=false
+                    this.dialogVisible=false;
+                    this.$message({
+                        type: 'success',
+                        message: '编辑成功!'
+                    });
                     this.tableData= {
                         department: {
                             id: "",
