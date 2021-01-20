@@ -59,52 +59,55 @@
         </el-form>
         </div>
         <el-table
-          :data="tableData"
+          :data="assignmentList"
           style="width: 100%">
-          <el-table-column
-            prop="name"
+         <el-table-column
+            prop="kpiMouldName"
             label="模板"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="date"
+            prop="startDate"
             label="开始时间"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="endDate"
             label="结束时间">
           </el-table-column>
           <el-table-column
-            prop="proson"
+            prop="kpiCategory"
             label="周期">
           </el-table-column>
-          <el-table-column
-            prop="proson"
+          <el-table-column 
+            prop="users"
             label="成员">
+            <template slot-scope="scope">
+                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index<3">{{(index>=2)?item.realName+"...":item.realName+","}}</span>
+            </template>
           </el-table-column>
           <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"
-           > <router-link to='/kpiScore/detail'>评分</router-link> </el-button>
+           > <router-link :to="{path:'/kpiScore/detail',query:{id:scope.row.id}}">评分</router-link> </el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="open">删除</el-button>
+           >删除</el-button>
         </template>
       </el-table-column>
         </el-table>
         <div class="block">
           <el-pagination
-            :hide-on-single-page="value"
+            :hide-on-single-page="values"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
+            :page-size="pageable.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="40">
+            :total="totals">
           </el-pagination>
         </div>
       </div>

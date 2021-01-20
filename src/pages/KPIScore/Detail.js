@@ -1,78 +1,43 @@
 export default {
     data() {
         return {
-            forms:{
-                tableData: [
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                ]
-            },
+            assignmentItems:[
+
+            ],
+            userItems:[],
             rules: {
                 num: [{ required: true, message: '数量不能为空', trigger: 'blur' }],
 
-            }
+            },
             
 
         };
     },
 
     components: {},
-
-    methods: {
+    created() {
+            this.getKpiScoreDetail()
         
-    }
+    },
+    methods: {
+        //获取考核评分详情
+        getKpiScoreDetail() {
+            let id={id:this.$route.query.id}
+
+            this.assignmentItems=[
+
+            ]
+            this.$http.get('kpi/auth/score/scoring', id).then(res => {
+                console.log(res)
+                let data = res.data.data
+                this.assignmentItems = data.assignmentItems
+                console.log(this.assignmentItems,"122233")
+               this.userItems= data.assignmentItems.map(item=>{
+                    return item.userItems
+                })
+                console.log(this.userItems)
+            })
+        },  
+    },
+  
 }

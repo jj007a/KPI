@@ -114,7 +114,7 @@ export default {
                 this.personList=res.data.data.data
                 this.pageable=res.data.data.pageable
                 console.log(res.data.data.total)
-                this.totals = res.data.data.total
+                this.totals = res.data.data.totalPages
             })
         },
         // 获取部门数据

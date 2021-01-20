@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {loginByTo,loginout} from '@/api/login'
+import { getPersonnelList, getDepartmentList, getKpiTemplatelList} from '@/api/common'
 import Cookies from 'js-cookie'
 Vue.use(Vuex)
 
@@ -15,6 +16,10 @@ const store = new Vuex.Store({
         token: Cookies.get('Admin-Token'),
         name: Cookies.get('Admin-Name'),
         password:'', 
+        /* pageable:{
+            pageNumber:1,
+            pageSize:10
+        } */
     },
     getters:{
         token: state => state.token,  
@@ -106,6 +111,32 @@ const store = new Vuex.Store({
                     resolve()     
                 }).catch(erro=>{
                     reject(erro)
+                })
+            })
+        },
+        //获取部门列表
+
+        GetDepartmentList({commit},data){
+            return new Promise((resolve,reject)=>{
+                
+                getDepartmentList(data.pageNumber, data.pageSize).then(res=>{
+                    console.log(res)
+                    resolve(res)
+                }).catch(error=>{
+                    reject(error)
+                })
+            })
+        },
+        //获取人员列表
+
+        GetPersonnelList(data){
+            return new Promise((resolve,reject)=>{
+                
+                getDepartmentList(data.pageNumber, data.pageSize).then(res=>{
+                    console.log(res)
+                    resolve(res)
+                }).catch(error=>{
+                    reject(error)
                 })
             })
         },

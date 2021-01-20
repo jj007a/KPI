@@ -3,7 +3,7 @@
     <div class="personnel">
       <div class="personnelContent">
         <el-dialog
-        title="添加考核设置"
+        :title="propTitle"
         :visible.sync="dialogVisible"
         width="40%"
        >
@@ -165,9 +165,9 @@
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
+            :page-size="pageable.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="40">
+            :total="totals">
           </el-pagination>
         </div>
       </div>

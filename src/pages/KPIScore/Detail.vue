@@ -5,49 +5,49 @@
         <h1>考核评分</h1>
         <h2>考核模板名称</h2>
         <p></p>
-        <el-form :model="forms" ref="forms" :rules="rules">
+        <el-form :model="tableData" ref="tableData" :rules="rules">
             <el-table
         border
-        :data="forms.tableData"
+        :data="assignmentItems"
         style="width:100%"
         height="600">
         <el-table-column
-        fixed
-        prop="content"
+       
+        prop="kpiName"
         label="考核内容"
-        width="500"
+        min-width="500"
         >
         </el-table-column>
         <el-table-column
-        fixed
-        prop="num"
+        
+        prop="score"
         label="总分"
-        width="50">
+        width="100">
         </el-table-column>
-        <el-table-column
+       <!--  <el-table-column
         fixed
         prop="department"
         label="部门"
         width="100">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
-        v-for='item in forms.tableData'
-        :label="item.name"
-        :key='item.key'
+        v-for="it in userItems[0]"
+        :label="it.username"
+        :key='it.id'
         width="100"
         >
-            <template slot-scope="scope">
-                <el-form-item :prop="item.num" >
-                            <el-input v-model="item.num"></el-input>
-                    </el-form-item>
-            </template>
+         <!--  <template slot-scope="scope">
+              <el-form-item :prop="it.factScore" >
+                          <el-input v-model="it.factScore"></el-input>
+                  </el-form-item>
+          </template> -->
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
             fixed="right"
         prop="Assessor"
         label="考评人"
         width="100">
-        </el-table-column>
+        </el-table-column> -->
        <!--  <el-table-column
         fixed="right"
         label="操作"
@@ -158,7 +158,5 @@
   .propBox .el-form{
     width: 90%;
   }
-  
-flow: visible;
 
 </style>

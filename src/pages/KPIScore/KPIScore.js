@@ -6,67 +6,55 @@ export default {
                 user: '',
                 region: ''
             },
-            tableData: [
-                {
-                    date: '网络',
-                    name: '王小虎',
-                    address: '前端',
-                    proson: '职员',
-                    // action:'修改'
-                },
-                {
-                    date: '网络',
-                    name: '王小虎',
-                    address: '前端',
-                    proson: '职员',
-                    // action:'修改'
-                },
-                {
-                    date: '网络',
-                    name: '王小虎',
-                    address: '前端',
-                    proson: '职员',
-                    // action:'修改'
-                },
-
-            ],
-            value: false,
-            currentPage4: 4,
+            tableData: {
+                endDate: "",
+                startDate: "",
+                kpiMouldId: "",
+                kpiCategory: "",
+                userIds: []
+            },
+            assignmentList: [],
+            currentPage4:1,
+            values: false,
             dialogVisible: false,
-            score:''
+            score:'',
+            pageable: {
+                pageNumber: 1,
+                pageSize: 10
+            },
+            totals: 40
         }
 
     },
+    created() {
+        this.getAssignmentList();
+    },
     methods: {
-        handleEdit(index, row) {
-            console.log(index, row);
-        },
-        handleDelete(index, row) {
-            console.log(index, row);
-        },
         handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
+            this.pageable.pageSize = val
+            this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
+                this.assignmentList = res.data.data.data
+            })
         },
+        // 分页
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
+            this.pageable.pageNumber = val
+            this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
+                this.assignmentList = res.data.data.data
+            })
         },
-        open() {
-            this.$confirm('此操作将永久删除, 是否继续?', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-        }    
+
+        //获取 设置列表
+        getAssignmentList() {
+            this.$http.get('kpi/auth/assignment/list', { pageNumber: 1, pageSize: 10 }).then(res => {
+                this.assignmentList = res.data.data.data
+                this.pageable = res.data.data.pageable
+                console.log(res.data.data.total)
+                this.totals = res.data.data.totalPages
+            })
+        },
+        
 
     },
 

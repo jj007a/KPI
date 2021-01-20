@@ -13,29 +13,15 @@ export default {
         kpiCategory:"",
         userIds:[]
       },
+      propTitle:'绩效模板任务添加',
       assignmentList:[],
       categoryList:[],
       value: false,
-      currentPage4: 4,
+      currentPage4: 1,
       dialogVisible: false,
       dialogEditVisible: false,
       formLabelAlign: {
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
+        options: [],
       },
       formInline:{},
       editFromLabel: {
@@ -64,7 +50,12 @@ export default {
         objects: [],
       },
       isAdd:true,
-      isEdit:false
+      isEdit:false,
+      pageable: {
+        pageNumber: 1,
+        pageSize: 10
+      },
+      totals: 40
     }
 
   },
@@ -73,14 +64,24 @@ export default {
     this.getKpiTemplate();
     this.getPorson()
     this.getAssignmentList()
+    // this.getDepartment()
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.pageable.pageSize = val
+      this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
+        this.assignmentList = res.data.data.data
+      })
     },
+    // 分页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.pageable.pageNumber = val
+      this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
+        this.assignmentList = res.data.data.data
+      })
     },
+ 
     /* 
     *获取模板列表
     */
@@ -107,6 +108,9 @@ export default {
     getAssignmentList(){
      this.$http.get('kpi/auth/assignment/list',{pageNumber:1,pageSize:10}).then(res=>{
        this.assignmentList=res.data.data.data
+       this.pageable = res.data.data.pageable
+       console.log(res.data.data.total)
+       this.totals = res.data.data.totalPages
      }) 
     },
     //新增弹框
@@ -114,6 +118,7 @@ export default {
       this.dialogVisible = true;
       this.isAdd=true;
       this.isEdit=false
+      this.propTitle = '绩效考核任务添加'
       this.tableData =  {
         endDate: "",
           startDate: "",
@@ -138,8 +143,7 @@ export default {
               message: '模板配置完成',
               type: 'success'
             });
-            this.tableData={};
-            this.dialogVisible=false
+            this.dialogVisible = false
             this.getAssignmentList()
           })
         } else {
@@ -153,13 +157,15 @@ export default {
       this.dialogVisible = true
       this.isEdit=true;
       this.isAdd=false;
+      this.propTitle='绩效考核任务编辑';
       this.$http.get('kpi/auth/assignment/detail',{id:row.id}).then(res=>{
-        let data=res.data.data
+        let data=res.data.data;
         console.log(this.tableData)
-        this.tableData.endDate=data.endDate
-        this.tableData.startDate=data.startDate
-        this.tableData.kpiCategory=data.kpiCategory
-        this.tableData.kpiMouldId=data.kpiMouldId
+        this.tableData.endDate=data.endDate;
+        this.tableData.startDate=data.startDate;
+        this.tableData.kpiCategory=data.kpiCategory;
+        this.tableData.kpiMouldId=data.kpiMouldId;
+        this.tableData.id=data.id;
         this.tableData.userIds = data.users.map(item=>{
           return item.id
         })
@@ -172,15 +178,15 @@ export default {
     },
     //编辑
     edit(){
+      
       this.$http.post('kpi/auth/assignment/update', 
       JSON.stringify(this.tableData)).then(res => {
         this.$message({
           message: '模板编辑完成',
           type: 'success'
         });
-          this.dialogVisible = false
-          this.getAssignmentList()
-          this.tableData={}
+          this.dialogVisible = false;
+          this.getAssignmentList();
         })
     },
     del(row){
