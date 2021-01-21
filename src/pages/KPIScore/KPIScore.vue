@@ -2,41 +2,7 @@
 <template>
     <div class="personnel">
       <div class="personnelContent">
-        <el-dialog
-        title="考核评分"
-        :visible.sync="dialogVisible"
-        width="50%"
-       >
-       <div class="propBox score">
-         <h2>考核评分</h2>
-         <p>王小虎的月考核，当前22分</p>
-         <el-table
-          :data="tableData"
-          height="250"
-          border
-          style="width: 100%">
-            <el-table-column
-              prop="date"
-              label="考核内容"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="总分"
-              width="100">
-            </el-table-column>
-             <el-table-column label="操作"  width="100">
-              <template slot-scope="scope">
-                <el-input v-model="score" ></el-input>
-              </template>
-          </el-table-column>
-          </el-table>
-       </div>
-        <span slot="footer" class="dialog-footer">
-           <el-button type="primary" @click="dialogVisible = false">提 交</el-button>
-          <el-button @click="dialogVisible = false">考核 结束</el-button>
-        </span>
-        </el-dialog>
+
         <h1>绩效评分</h1>
         <div class="divMain">
           <el-form :inline="true" :model="formInline" class="demo-form-inline">
@@ -83,18 +49,19 @@
             prop="users"
             label="成员">
             <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index<3">{{(index>=2)?item.realName+"...":item.realName+","}}</span>
+                <span v-for="(item,index) in scope.row.users" :key="item.id" >{{(index>=2)?item.realName+"...":item.realName+","}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button
+          <el-button v-if="scope.row.isEnd==false"
             size="mini"
-           > <router-link :to="{path:'/kpiScore/detail',query:{id:scope.row.id}}">评分</router-link> </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-           >删除</el-button>
+           > <router-link :to="{path:'/KPIScore/detail',query:{id:scope.row.id}}">评分</router-link> </el-button>
+           <el-button size="mini" v-else>考核已结束</el-button>
+          <!--  <el-button
+              size="mini"
+              type="danger"
+            >删除</el-button> -->
         </template>
       </el-table-column>
         </el-table>

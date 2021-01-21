@@ -64,7 +64,6 @@ export default {
     this.getKpiTemplate();
     this.getPorson()
     this.getAssignmentList()
-    // this.getDepartment()
   },
   methods: {
     handleSizeChange(val) {
@@ -121,10 +120,10 @@ export default {
       this.propTitle = '绩效考核任务添加'
       this.tableData =  {
         endDate: "",
-          startDate: "",
-            kpiMouldId: "",
-              kpiCategory: "",
-                userIds: []
+        startDate: "",
+        kpiMouldId: "",
+        kpiCategory: "",
+        userIds: []
       }
     },
     //编辑弹框

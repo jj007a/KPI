@@ -40,22 +40,19 @@ export default {
                         children:[
                             { name: '/KPITemplate', url: '/KPITemplate', title: '绩效考核模板', icon: 'el-icon-document-checked'},
                             { name: '/KPISetting', url: '/KPISetting', title: '绩效考核设置', icon: 'el-icon-setting'},
-                            { name: '/KPiScore', url: '/KPiScore', title: '绩效考核评分', icon: 'el-icon-edit'},
+                            { name: '/KPIScore', url: '/KPIScore', title: '绩效考核评分', icon: 'el-icon-edit'},
                         ]
                     },
                 ]
-                let url = this.$route.path.replace("/detail","")
+                let url = this.$route.path.split("?")[0].replace("/detail","")
                 let activeUrl = {}
                 let indexUrl = { name: 'dashboard', url: '/dashboard', title: '首页' }
                 this.routerNavslist.forEach(item => {
                     item.children.forEach(it => {
-                        if (it.url == url) {
+                        if (it.url == url){
                             activeUrl.title = it.title;
                             activeUrl.url = it.url;
                             activeUrl.name = it.name
-
-                        } else if (it.url == '/dashboard'){
-                            activeUrl = indexUrl
                         }
                     })
                 })

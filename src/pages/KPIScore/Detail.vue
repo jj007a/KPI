@@ -3,23 +3,23 @@
   <div class="personnel " id='assess'>
     <div class="KPIAssess">
         <h1>考核评分</h1>
-        <h2>考核模板名称</h2>
+        <h2>{{tableForm.assignmentMouldName}}</h2>
         <p></p>
-        <el-form :model="tableData" ref="tableData" :rules="rules">
+        <el-form :model="tableForm.assignmentItems.userItems" ref="tableForm" :rules="rules">
             <el-table
         border
-        :data="assignmentItems"
+        :data="tableForm.assignmentItems"
         style="width:100%"
-        height="600">
+        max-height="600">
         <el-table-column
-       
+        fixed
         prop="kpiName"
         label="考核内容"
         min-width="500"
         >
         </el-table-column>
         <el-table-column
-        
+         fixed
         prop="score"
         label="总分"
         width="100">
@@ -31,16 +31,18 @@
         width="100">
         </el-table-column> -->
         <el-table-column
-        v-for="it in userItems[0]"
+        v-for="(it,index) in tableForm.assignmentItems[0].userItems"
         :label="it.username"
-        :key='it.id'
+        :key='it.userId'
         width="100"
+        align="center"
         >
-         <!--  <template slot-scope="scope">
-              <el-form-item :prop="it.factScore" >
-                          <el-input v-model="it.factScore"></el-input>
-                  </el-form-item>
-          </template> -->
+          <template slot-scope="scope">
+            <!-- {{scope.$index}}{{index}}{{scope.column.property}} -->
+             <!-- {{scope.row}} -->
+              <el-input v-model="scope.row.userItems[index].factScore"></el-input>
+                 
+          </template>
         </el-table-column>
         <!-- <el-table-column
             fixed="right"
@@ -60,8 +62,8 @@
             </el-table>
             <div class="button_bottom">
              <el-form-item>
-                  <el-button type="primary" @click="submitForm('forms')">提交</el-button>
-                  <el-button >考核 结束</el-button>
+                  <el-button type="primary" @click="submitForm('assignmentItems')">提交</el-button>
+                  <el-button ><router-link to='/KPIScore'>返回</router-link></el-button>
                 </el-form-item>
             </div>
         </el-form>

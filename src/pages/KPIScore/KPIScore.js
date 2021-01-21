@@ -50,7 +50,6 @@ export default {
             this.$http.get('kpi/auth/assignment/list', { pageNumber: 1, pageSize: 10 }).then(res => {
                 this.assignmentList = res.data.data.data
                 this.pageable = res.data.data.pageable
-                console.log(res.data.data.total)
                 this.totals = res.data.data.totalPages
             })
         },

@@ -80,7 +80,7 @@ const routes=[
                 component: kpiScore,
             },
             {
-                path: 'KPiScore/detail',
+                path: 'KPIScore/detail',
                 name: 'detail',
                 component: detail
             },
