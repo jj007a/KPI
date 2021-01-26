@@ -4,11 +4,11 @@
       <div class="kpiLoginContainer">
         <h1>绩效考核管理系统</h1>
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"  class="demo-ruleForm">
-             <el-form-item  prop="user">
-                <el-input  v-model="ruleForm.user" placeholder="用户名"></el-input>
+             <el-form-item  prop="username">
+                <el-input  v-model="ruleForm.username" placeholder="用户名"></el-input>
             </el-form-item>
-            <el-form-item  prop="pass">
-                <el-input type="password" @keyup.enter.native="submitForm('ruleForm')" placeholder="密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            <el-form-item  prop="password">
+                <el-input type="password" @keyup.enter.native="submitForm('ruleForm')" placeholder="密码" v-model="ruleForm.password" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item prop="checked">
                 <el-checkbox v-model="checked">记住用户名</el-checkbox>
@@ -44,16 +44,16 @@
       };
       return {
         ruleForm: {
-          pass: '',
-          user:"",
+          password: '',
+          username:"",
           
         },
         checked: false,
         rules: {
-          pass: [
+          password: [
             { validator: validatePass, trigger: 'blur' }
           ],
-          user: [
+          username: [
             { validator: validateUser , trigger: 'blur'}
           ],
         }
@@ -69,23 +69,34 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let params={user:this.ruleForm.user,password:this.ruleForm.pass}
-            console.log(params)
-            this.$store.dispatch('LoginByTo', params).then(()=>{
-               console.log('登录成功')
-               this.$message({
-                  message: '登录成功',
-                  type: 'success'
-               })
-               if(this.checked){
-                  localStorage.setItem('SET_Admin',true)
+            // let params=new FormData()
+            // params.append('username',this.ruleForm.username)
+            // params.append('password',this.ruleForm.password)
+            let params={username:this.ruleForm.username,password:this.ruleForm.password}
+         
+            this.$store.dispatch('LoginByTo', params).then((res)=>{
+              console.log(res)
+               if(res.data.status==200){
+                  this.$message({
+                    message: '登录成功',
+                    type: 'success'
+                  })
+                  if(this.checked){
+                      localStorage.setItem('SET_Admin',true)
+                  }else{
+                      localStorage.removeItem('SET_Admin')
+                  }
+                  
+                  this.$router.push({path:'/'})
                }else{
-                  localStorage.removeItem('SET_Admin')
+                  this.$message({
+                    message: res.data.msg,
+                    type: 'error'
+                  })
                }
-             
-               this.$router.push({path:'/'})
-            }).catch(()=>{
-                
+               
+            }).catch((erro)=>{
+                console.log(erro)
             })
           } else {
             console.log('error submit!!');

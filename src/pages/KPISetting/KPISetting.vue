@@ -143,7 +143,7 @@
             prop="users"
             label="成员">
             <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index<3">{{(index>=2)?item.realName+"...":item.realName+","}}</span>
+                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index<3">{{(index==(scope.row.users.length-1) || index>=2)?item.realName+"...":item.realName+","}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">

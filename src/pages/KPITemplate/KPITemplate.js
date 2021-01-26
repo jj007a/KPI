@@ -12,7 +12,7 @@ export default {
                 id: "",
                 kpiMouldItems: [{
                     kpiName: '',
-                    score: ''
+                    score: '',
                 }],
                 mouldName: '',
                 totalScore: ''
@@ -104,7 +104,8 @@ export default {
         // 初始化模板
         getKpiMouldInfo() {
             this.$http.get('kpi/auth/mould/list').then(res => {
-                this.KpiMouldList = res.data.data
+                console.log(res)
+                this.KpiMouldList = res.data.data.data.data
             })
         },
         // 获取部门数据

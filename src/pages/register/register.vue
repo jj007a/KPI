@@ -4,22 +4,25 @@
       <div class="kpiLoginContainer">
         <h1>注册</h1>
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"  class="demo-ruleForm">
-             <el-form-item  prop="user">
-                <el-input  v-model="ruleForm.user" placeholder="用户名"></el-input>
+             <el-form-item  prop="username">
+                <el-input  v-model="ruleForm.username" placeholder="用户名"></el-input>
             </el-form-item>
-             <el-form-item  prop="email"
+             <el-form-item  prop="realName">
+                <el-input  v-model="ruleForm.realName" placeholder="姓名"></el-input>
+            </el-form-item>
+            <!--  <el-form-item  prop="email"
              :rules="[
                 { required: true, message: '请输入邮箱地址', trigger: 'blur' },
                 { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
               ]">
                 <el-input  v-model="ruleForm.email" placeholder="邮箱"></el-input>
+            </el-form-item> -->
+            <el-form-item  prop="password">
+                <el-input type="password" placeholder="密码" v-model="ruleForm.password" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item  prop="pass">
-                <el-input type="password" placeholder="密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item  prop="checkPass">
+           <!--  <el-form-item  prop="checkPass">
                 <el-input type="password" placeholder="确认密码" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary"  @click="submitForm('ruleForm')">注册</el-button>
                 <el-button > <router-link to="/login">去登录</router-link>  </el-button>
@@ -32,7 +35,6 @@
 </template>
 
 <script>
-import fetch from '@/core/http'
  export default {
     data() {
       var validatePass = (rule, value, callback) => {
@@ -49,7 +51,14 @@ import fetch from '@/core/http'
             callback()
         }
       };
-       var validatePass2 = (rule, value, callback) => {
+      var validateName = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入姓名'));
+        }else{
+            callback()
+        }
+      };
+     /*   var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
         } else if (value !== this.ruleForm.pass) {
@@ -57,24 +66,24 @@ import fetch from '@/core/http'
         } else {
           callback();
         }
-      };
+      }; */
       return {
         ruleForm: {
-          pass: '',
-          user:"",
-          email:'',
-          checkPass:''
+          password: '',
+          username:"",
+          realName:""
         },
         rules: {
-          pass: [
+          password: [
             { validator: validatePass, trigger: 'blur' }
           ],
-          user: [
+          username: [
             { validator: validateUser , trigger: 'blur'}
           ],
-            checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
+          realName: [
+            { validator: validateUser , trigger: 'blur'}
           ],
+           
         }
       };
     },
@@ -83,10 +92,17 @@ import fetch from '@/core/http'
         this.$refs[formName].validate((valid) => {
           console.log(this.ruleForm)
           if (valid) {
-            let url='/api/user/login'
-            let params={user:this.ruleForm.user,password:this.ruleForm.pass}
-            fetch({method:'post',url,data:params}).then(res=>{
+            let url='kpi/register'
+            let params={username:this.ruleForm.username,password:this.ruleForm.password,realName:this.ruleForm.realName}
+            this.$http.post(url,JSON.stringify(params)).then(res=>{
               console.log(res)
+              if(res.status==200){
+                this.$message({
+                  type:'success',
+                  message:'注册成功'
+                })
+                this.$router.push('/login')
+              }
             })
           } else {
             console.log('error submit!!');

@@ -15,7 +15,7 @@
             <span slot="title">{{item.name}}</span>
             </template>
             <el-menu-item-group>
-                <el-menu-item :index="list.url" v-for="list in item.children" :key="list.url" @click="add(list)">
+                <el-menu-item :index="list.url" v-for="list in item.children" :key="list.url" @click="add(list)" >
                     <i :class="list.icon"></i>
                     <span>{{list.title}}</span>
                 </el-menu-item>

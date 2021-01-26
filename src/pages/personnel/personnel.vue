@@ -25,9 +25,9 @@
           <el-form-item label="职位：">
             <el-input v-model="tableData.position"></el-input>
           </el-form-item>
-          <el-form-item label="角色：">
+          <!-- <el-form-item label="角色：">
             <el-input v-model="tableData.username"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
        </div>
        
@@ -61,7 +61,7 @@
             </el-form-item>
         </el-form>
         </div>
-        <el-table
+        <el-table class="animated bounceInDown"
           :data="personList"
           style="width: 100%">
           <el-table-column

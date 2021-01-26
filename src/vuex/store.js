@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {loginByTo,loginout} from '@/api/login'
+import { loginByTo, loginout, getInfo} from '@/api/login'
 import { getPersonnelList, getDepartmentList, getKpiTemplatelList} from '@/api/common'
 import Cookies from 'js-cookie'
 Vue.use(Vuex)
@@ -14,8 +14,10 @@ const store = new Vuex.Store({
         // 已有的tab nav
         navTabs:[{title:'首页',name:'dashboard',url:'/dashboard'}],
         token: Cookies.get('Admin-Token'),
-        name: Cookies.get('Admin-Name'),
+        userId: Cookies.get('User-Id'),
+        userName: Cookies.get('User-Name'),
         password:'', 
+        userInfo:[],
         /* pageable:{
             pageNumber:1,
             pageSize:10
@@ -23,7 +25,9 @@ const store = new Vuex.Store({
     },
     getters:{
         token: state => state.token,  
-        name:state=> state.name,
+        name: state => state.userName,
+        userId: state => state.userId,
+        userInfo: state => state.userInfo
     },
     mutations:{
         setRouterName(state,obj){
@@ -75,27 +79,36 @@ const store = new Vuex.Store({
        SET_TOKEN(state,token){
          state.token=token       
         },
+       SET_ID(state,id){
+           state.userId=id       
+        },
        SET_NAME(state,name){
-         state.name=name       
+           state.name=name       
         },
        SET_PASS(state,password){
          state.password=password       
         },
-        
+        SET_INFO(state,userInfo){
+            state.userInfo = userInfo
+        }
      
     },
     actions:{
         // 登录
         LoginByTo({commit},userInfo) {
             return new Promise((resolve, reject) => {
-                loginByTo(userInfo.user, userInfo.password).then(response => {
+                loginByTo(userInfo.username, userInfo.password).then(response => {
                     const data = response.data;
-                    if(data.code==200){
+                    if (data.status==200){
                         Cookies.set('Admin-Token', data.data.token);
-                        Cookies.set('Admin-Name', userInfo.user);
+                        Cookies.set('User-Id', data.data.currentUserId);
+                        Cookies.set('User-Name', userInfo.username)
+                        commit('SET_ID', data.data.currentUserId);
                         commit('SET_TOKEN', data.data.token);
-                        commit('SET_NAME', userInfo.user);
-                        resolve();
+                        // commit('SET_NAME', userInfo.user);
+                        resolve(response);
+                    }else{
+                        resolve(response)
                     }
                 }).catch(error => {
                     reject(error);
@@ -108,9 +121,26 @@ const store = new Vuex.Store({
                 loginout().then(()=>{
                     commit('SET_TOKEN','')
                     Cookies.remove('Admin-Token') 
+                    Cookies.remove('User-Id') 
+                    Cookies.remove('User-Name') 
+                    commit('SET_INFO', []);
                     resolve()     
                 }).catch(erro=>{
                     reject(erro)
+                })
+            })
+        },
+        // 获取用户详情
+
+        GetUserInfo({commit},id){
+            console.log(id,'storeActions')
+            return new Promise((resolve,reject)=>{
+                getInfo(id).then((res)=>{
+                    console.log(res,"用户详情")
+                    commit('SET_INFO', res.data.data.roles);
+                    resolve()
+                }).catch(error=>{
+                    reject(error)
                 })
             })
         },
@@ -118,9 +148,7 @@ const store = new Vuex.Store({
 
         GetDepartmentList({commit},data){
             return new Promise((resolve,reject)=>{
-                
                 getDepartmentList(data.pageNumber, data.pageSize).then(res=>{
-                    console.log(res)
                     resolve(res)
                 }).catch(error=>{
                     reject(error)

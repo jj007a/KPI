@@ -7,6 +7,7 @@ export default {
         
       },
       tableData:{
+        assessorId:"",
         endDate:"",
         startDate:"",
         kpiMouldId:"",
@@ -86,7 +87,7 @@ export default {
     */
     getKpiTemplate(){
       this.$http.get('kpi/auth/mould/list').then(res=>{
-          this.moudle=res.data.data
+          this.moudle=res.data.data.data.data
       })
     },
     /**
@@ -136,6 +137,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.tableData.assessorId = this.$store.state.userId
           this.$http.post('kpi/auth/assignment/save',
           JSON.stringify(this.tableData) ).then(res => {
             this.$message({
