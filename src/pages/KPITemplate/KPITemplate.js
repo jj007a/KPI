@@ -25,6 +25,12 @@ export default {
             isEdit: false
         }
     },
+    // filters: {
+    //     formatDate: (value)=> {
+    //         if (!value) return ''
+    //         return this.$moment(value).format("YYYY-MM-DD")
+    //     }
+    // },
     created() {
         this.getDepartment()
         this.getKpiMouldInfo()

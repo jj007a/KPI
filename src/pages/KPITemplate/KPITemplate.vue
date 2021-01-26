@@ -126,15 +126,16 @@
             </el-dropdown>
           </el-button>
         </div>
-        <div>创建时间 : {{ item.createdDate }}</div>
+        <div>创建时间 : {{ $moment(item.createdDate).format('YYYY-MM-DD')  }}</div>
         <div
           v-for="(o, index) in item.kpiMouldItems"
           :key="o.index"
           class="text item"
           v-if="index <= 1"
         >
-          {{ o.kpiName }} : <span style="color: red">{{ o.score }}分</span>
+         {{(index+1)+'.'}} {{ o.kpiName }}  (<span style="color: red">{{ o.score }}分</span>)
         </div>
+        <div v-else>3. ....</div>
       </el-card>
     </div>
   </div>
@@ -262,5 +263,8 @@ h2 {
 }
 .KPITemplate .el-dialog__footer {
   text-align: center;
+}
+.el-card__body .item{
+  margin-bottom: 10px;
 }
 </style>
