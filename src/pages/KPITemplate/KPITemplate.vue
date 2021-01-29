@@ -8,20 +8,20 @@
           ref="dynamicValidateForm"
           class="demo-dynamic"
         >
-          <div class="selectDep">
+        <!--   <div class="selectDep">
             <el-select
-              v-model="dynamicValidateForm.department.id"
-              placeholder="请选择部门"
+              v-model="department.id"
             >
               <el-option
                 v-for="item in tableData"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
+                disabled
               >
               </el-option>
             </el-select>
-          </div>
+          </div> -->
           <div class="templateHeader">
             <el-form-item
               prop="mouldName"
@@ -51,6 +51,7 @@
             v-for="(mouldItem, index) in dynamicValidateForm.kpiMouldItems"
             :key="mouldItem.key"
           >
+          <div class="kpiDaskList">
             <el-form-item
               :prop="'kpiMouldItems.' + index + '.kpiName'"
               :rules="{
@@ -75,12 +76,30 @@
             >
               <el-input
                 v-model="mouldItem.score"
-                placeholder="单项考核分数"
+                placeholder="分值"
               ></el-input
-              ><el-button @click.prevent="removeDomain(mouldItem)"
-                >删除</el-button
               >
             </el-form-item>
+            <el-form-item>
+              <el-button @click.prevent="removeDomain(mouldItem)"
+                >删除</el-button
+              >
+               <el-button @click="addStandard(mouldItem)">新增考核标准</el-button>
+            </el-form-item>
+          </div>
+            <div class="kpiStandard" v-for="(its,index) in mouldItem.memoItems" :key="its.index">
+                 <el-input
+                 
+                  v-model="its.memo"
+                placeholder="单项考核标准"
+              ></el-input
+              >
+              
+               <el-button @click.prevent="removeStandard(mouldItem,its)"
+                >删除</el-button
+              >
+            </div>
+           
           </div>
           <el-form-item v-if="isSave">
             <el-button type="primary" @click="submitForm('dynamicValidateForm')"
@@ -96,6 +115,7 @@
             <el-button type="primary" @click="editForm('dynamicValidateForm')"
               >提交</el-button
             >
+             <el-button @click="addDomain">新增考核项目</el-button>
             <el-button @click="moudelBack">返回</el-button>
           </el-form-item>
         </el-form>
@@ -195,13 +215,13 @@ h2 {
 .KPITemplate .divMain {
   width: 100%;
   margin-top: 32px;
+  height: 665px;
+  overflow: auto;
 }
 .KPITemplate .divMain .templateHeader {
   display: flex;
 }
-.KPITemplate .divMain .templateHeader {
-  display: flex;
-}
+
 .KPITemplate .divMain .el-form-item {
   font-size: 16px;
   width: 80%;
@@ -217,7 +237,7 @@ h2 {
   margin-left: 20px;
 }
 .KPITemplate .templateMain {
-  display: flex;
+  /* display: flex; */
 }
 .KPITemplate .templateMain .el-form-item:last-child {
   margin-left: 20px;
@@ -266,5 +286,19 @@ h2 {
 }
 .el-card__body .item{
   margin-bottom: 10px;
+}
+.templateMain .el-form-item:nth-of-type(2){
+   width: 25%;
+   margin-left: 10px;
+}
+.kpiDaskList{
+  width: 100%;
+  display: flex;
+}
+.kpiStandard{
+  margin-bottom: 20px;
+}
+.kpiStandard .el-input{
+  width: 88%;
 }
 </style>

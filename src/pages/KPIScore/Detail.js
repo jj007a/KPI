@@ -2,10 +2,13 @@ export default {
     data() {
         return {
             tableForm:{
+                assessorId:'',
                 assignmentId:'',
                 assignmentMouldName:"",
                 assignmentItems: [
-                    {}
+                    {
+                       kpiS:1
+                    }
                 ],
             },
             userItems:[],
@@ -21,12 +24,29 @@ export default {
         
     },
     methods: {
+        objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+            /* console.log(rowIndex, columnIndex) */
+            /* if (columnIndex === 0) {
+                if (rowIndex % 2 === 0) {
+                    return {
+                        rowspan: 2,
+                        colspan: 1
+                    };
+                } else {
+                    return {
+                        rowspan: 0,
+                        colspan: 0
+                    };
+                }
+            } */
+        },
         //获取考核评分详情
         getKpiScoreDetail() {
             console.log(this.$route.query.id)
             let assignmentId = { assignmentId:this.$route.query.id}
             this.$http.get('kpi/auth/score/scoring', assignmentId).then(res => {
                 let data = res.data.data
+                this.tableForm.assessorId = data.assessorId
                 this.tableForm.assignmentId = data.assignmentId
                 this.tableForm.assignmentMouldName = data.assignmentMouldName
                 this.tableForm.assignmentItems = data.assignmentItems

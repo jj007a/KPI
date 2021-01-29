@@ -5,6 +5,9 @@ export default {
             tableData: {},
             value: false,
             currentPage4: 4,
+            department: {
+                id: ""
+            },
             dynamicValidateForm: {
                 department: {
                     id: ""
@@ -13,6 +16,7 @@ export default {
                 kpiMouldItems: [{
                     kpiName: '',
                     score: '',
+                    memoItems:[]
                 }],
                 mouldName: '',
                 totalScore: ''
@@ -25,12 +29,6 @@ export default {
             isEdit: false
         }
     },
-    // filters: {
-    //     formatDate: (value)=> {
-    //         if (!value) return ''
-    //         return this.$moment(value).format("YYYY-MM-DD")
-    //     }
-    // },
     created() {
         this.getDepartment()
         this.getKpiMouldInfo()
@@ -38,6 +36,7 @@ export default {
     methods: {
         removeDomain(item) {
             var index = this.dynamicValidateForm.kpiMouldItems.indexOf(item)
+            console.log(item)
             if (index !== -1) {
                 this.dynamicValidateForm.kpiMouldItems.splice(index, 1)
             }
@@ -46,7 +45,26 @@ export default {
             this.dynamicValidateForm.kpiMouldItems.push({
                 kpiName: '',
                 score: '',
+                memoItems:[]
             });
+        },
+        addStandard(item) {
+            var index = this.dynamicValidateForm.kpiMouldItems.indexOf(item)
+            console.log(index,item)
+            if(index !=-1){
+                item.memoItems.push({
+                   memo:""
+                });
+            }
+            
+        },
+        removeStandard(item,it) {
+            console.log(item)
+            let index = item.memoItems.indexOf(it)
+            if (index !== -1) {
+                item.memoItems.splice(index, 1)
+            }
+            console.log(index)
         },
         // 模板列表下拉菜单
         editKpiMould(a) {
@@ -64,6 +82,7 @@ export default {
                     this.dynamicValidateForm = res.data.data
                     this.header = '绩效考核查看'
                     this.isSave = false
+                    this.isEdit = false
                     this.isView = true
                 })
             } else {
@@ -110,8 +129,23 @@ export default {
         // 初始化模板
         getKpiMouldInfo() {
             this.$http.get('kpi/auth/mould/list').then(res => {
-                console.log(res)
-                this.KpiMouldList = res.data.data.data.data
+                if (res.data.status == 200) {
+                    this.KpiMouldList = res.data.data.data.data
+                    this.department.id=this.$store.getters.depId
+                } else if (res.data.status == 401){
+                    this.$message({
+                        type: "error",
+                        message: `登录已过期,${res.data.msg}`
+                    })
+                    this.$store.dispatch('LoginOut')
+                    this.$router.push('/login')
+                } else {
+                    this.$message({
+                        type: "error",
+                        message: `${res.data.msg}`
+                    })
+                }
+                
             })
         },
         // 获取部门数据
@@ -132,6 +166,7 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    // this.dynamicValidateForm.department.id = this.$store.getters.depId
                     this.$http.post('kpi/auth/mould/save',
                         JSON.stringify(this.dynamicValidateForm)).then(res => {
                             if (res.status == 200) {
@@ -141,6 +176,19 @@ export default {
                                 })
                                 this.getKpiMouldInfo()
                                 this.$refs[formName].resetFields();
+                                this.dynamicValidateForm = {
+                                    department: {
+                                        id: ""
+                                    },
+                                    id: "",
+                                    kpiMouldItems: [{
+                                        kpiName: '',
+                                        score: '',
+                                        memoItems: []
+                                    }],
+                                    mouldName: '',
+                                    totalScore: ''
+                                }
                             }
 
                         })

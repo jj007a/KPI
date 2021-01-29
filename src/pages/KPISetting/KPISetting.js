@@ -24,7 +24,10 @@ export default {
       formLabelAlign: {
         options: [],
       },
-      formInline:{},
+      formInline:{
+        kpiMouldName:"",
+        assessmentDate:""
+      },
       editFromLabel: {
         name: '',
         region: '',
@@ -69,19 +72,54 @@ export default {
   methods: {
     handleSizeChange(val) {
       this.pageable.pageSize = val
-      this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
+      let data = { ...this.pageable, ...this.formInline}
+      this.$http.get('kpi/auth/assignment/list', data).then(res => {
         this.assignmentList = res.data.data.data
       })
     },
     // 分页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.pageable.pageNumber = val
-      this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
+      this.pageable.pageNumber=val
+      let data = { ...this.pageable, ...this.formInline }
+      this.$http.get('kpi/auth/assignment/list', data).then(res => {
         this.assignmentList = res.data.data.data
       })
     },
- 
+    // 搜索
+    search(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let data={}
+          if (this.formInline.assessmentDate){
+             data = {
+              kpiMouldName: this.formInline.kpiMouldName,
+              assessmentDate: this.formInline.assessmentDate
+            }
+          }else{
+             data = {
+              kpiMouldName: this.formInline.kpiMouldName,
+            }
+          }
+          
+          data = { ...data,...this.pageable}
+          this.$http.get('kpi/auth/assignment/list',data).then(res=>{
+            if (res.data.data.data){
+              this.assignmentList = res.data.data.data
+            this.assignmentList.map(item => {
+              item.assessmentDate = this.$moment(item.assessmentDate).format('MM月')
+              item.endDate = this.$moment(item.endDate).format('YYYY-MM-DD')
+              item.startDate = this.$moment(item.startDate).format('YYYY-MM-DD')
+              return item
+            })
+            }else{
+              this.assignmentList=[]
+            }
+            
+          })
+        }
+      })
+    },
     /* 
     *获取模板列表
     */
@@ -95,6 +133,7 @@ export default {
      */
     getPorson(){
       this.$http.get('kpi/auth/user/list').then(res=>{
+        console.log(res,'人员列表')
         this.formLabelAlign.options=res.data.data.data;
       })
     },
@@ -107,10 +146,30 @@ export default {
     //获取 设置列表
     getAssignmentList(){
      this.$http.get('kpi/auth/assignment/list',{pageNumber:1,pageSize:10}).then(res=>{
-       this.assignmentList=res.data.data.data
-       this.pageable = res.data.data.pageable
-       console.log(res.data.data.total)
-       this.totals = res.data.data.totalPages
+          if (res.data.status == 200) {
+              this.assignmentList=res.data.data.data
+              this.assignmentList.map(item => {
+                  item.assessmentDate = this.$moment(item.assessmentDate).format('MM月')
+                  item.endDate = this.$moment(item.endDate).format('YYYY-MM-DD')
+                  item.startDate = this.$moment(item.startDate).format  ('YYYY-MM-DD')
+                  return item
+              })
+              this.pageable = res.data.data.pageable;
+              this.totals = res.data.data.totalPages;
+          } else if (res.data.status == 401) {
+            this.$message({
+              type: "error",
+              message: `登录已过期,${res.data.msg}`
+            })
+            this.$store.dispatch('LoginOut')
+            this.$router.push('/login')
+          }else{
+            this.$message({
+              type: "error",
+              message: `${res.data.msg}`
+            })
+          }
+       
      }) 
     },
     //新增弹框
@@ -123,7 +182,7 @@ export default {
         endDate: "",
         startDate: "",
         kpiMouldId: "",
-        kpiCategory: "",
+        assessmentDate:"",
         userIds: []
       }
     },
@@ -161,16 +220,17 @@ export default {
       this.propTitle='绩效考核任务编辑';
       this.$http.get('kpi/auth/assignment/detail',{id:row.id}).then(res=>{
         let data=res.data.data;
-        console.log(this.tableData)
+        console.log(res)
         this.tableData.endDate=data.endDate;
         this.tableData.startDate=data.startDate;
         this.tableData.kpiCategory=data.kpiCategory;
         this.tableData.kpiMouldId=data.kpiMouldId;
+        this.tableData.assessmentDate = data.assessmentDate;
         this.tableData.id=data.id;
         this.tableData.userIds = data.users.map(item=>{
           return item.id
         })
-       
+        console.log(this.tableData)
       })
     },  
     // 下拉多选数据强制刷新

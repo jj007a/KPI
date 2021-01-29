@@ -3,8 +3,7 @@ export default {
     data() {
         return {
             formInline: {
-                user: '',
-                region: '',
+               
                 
             },
             departmentData: [],
@@ -48,7 +47,9 @@ export default {
             propTitle:"添加人员",
             pageable:{
                 pageNumber:1,
-                pageSize:10
+                pageSize:10,
+                searchPropertyValue:"",
+                searchProperty:'u.realName',
             },
             totals:40
         }
@@ -103,18 +104,50 @@ export default {
             console.log(`当前页: ${val}`);
             this.pageable.pageNumber=val
             this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
-                this.personList = res.data.data.data
+                if(res.data.data){
+                     this.personList = res.data.data.data
+                }
+               
                 // this.pageable = res.pageable
+            })
+        },
+        // 搜索
+        search(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.pageable.searchProperty ="u.realName";
+                    this.pageable.searchPropertyValue=this.pageable.searchPropertyValue
+                    this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
+                        if (res.data.data.data) {
+                            this.personList = res.data.data.data
+                        } else {
+                            this.personList = []
+                        }
+
+                    })
+                }
             })
         },
         //初始化人员数据
         personInfo(){
             this.$http.get('kpi/auth/user/list',this.pageable).then(res=>{
-                console.log(res)
-                this.personList=res.data.data.data
-                this.pageable=res.data.data.pageable
-                console.log(res.data.data.total)
-                this.totals = res.data.data.totalPages
+                if(res.data.status==200){
+                    this.personList = res.data.data.data
+                    this.pageable = res.data.data.pageable
+                    this.totals = res.data.data.totalPages
+                }else if(res.data.status==401){
+                    this.$message({
+                        type: "error",
+                        message: `登录已过期,${res.data.msg}`
+                    })
+                    this.$store.dispatch('LoginOut')
+                    this.$router.push('/login')
+                }else{
+                    this.$message({
+                        type: "error",
+                        message: `${res.data.msg}`
+                    })
+                }
             })
         },
         // 获取部门数据

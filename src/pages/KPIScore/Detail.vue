@@ -9,13 +9,15 @@
             <el-table
         border
         :data="tableForm.assignmentItems"
+        :span-method="objectSpanMethod"
         style="width:100%"
         max-height="600">
+        <el-table-column label="部门:网络绩效考核">
         <el-table-column
         fixed
         prop="kpiName"
         label="考核内容"
-        min-width="500"
+        min-width="100"
         >
         </el-table-column>
         <el-table-column
@@ -24,15 +26,20 @@
         label="总分"
         width="100">
         </el-table-column>
-       <!--  <el-table-column
+        <el-table-column
         fixed
-        prop="department"
-        label="部门"
-        width="100">
-        </el-table-column> -->
+       
+        label="考核标准"
+       >
+         <template slot-scope="scope">
+             <div v-for="item in scope.row.memoItems" :key="item.memo" class="boxItem">
+                  {{item.memo}}
+             </div>
+          </template>
+        </el-table-column>
         <el-table-column
         v-for="(it,index) in tableForm.assignmentItems[0].userItems"
-        :label="it.username"
+        :label="it.realName"
         :key='it.userId'
         width="100"
         align="center"
@@ -59,7 +66,8 @@
             <el-button type="text" size="small">编辑</el-button>
         </template>
         </el-table-column> -->
-            </el-table>
+             </el-table-column></el-table>
+         
             <div class="button_bottom">
              <el-form-item>
                   <el-button type="primary" @click="submitForm('assignmentItems')">提交</el-button>
@@ -160,5 +168,17 @@
   .propBox .el-form{
     width: 90%;
   }
-
+.cell .boxItem:last-child{
+  border-bottom: none;
+}
+.boxItem{
+  padding:  10px 0;
+  border-bottom: 1px solid #EBEEF5;
+}
+.KPIAssess tbody .el-table__row td:nth-of-type(3){
+  padding: 0;
+}
+.KPIAssess tbody .el-table__row td:nth-of-type(3) .cell{
+  padding: 0;
+}
 </style>

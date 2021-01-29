@@ -5,22 +5,20 @@
 
         <h1>绩效评分</h1>
         <div class="divMain">
-          <el-form :inline="true" :model="formInline" class="demo-form-inline">
-            <el-form-item label="姓名：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+            <el-form-item label="模板名称：">
+              <el-input v-model="formInline.kpiMouldName" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="部门：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="职位：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="角色：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+            <el-form-item label="周期：">
+              <el-date-picker
+                    v-model="formInline.assessmentDate"
+                    type="month"
+                    value-format='yyyy-MM-dd HH:mm:ss'
+                    placeholder="选择月">
+                  </el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" >查询</el-button>
-              <!-- <el-button type="primary" >添加绩效</el-button> -->
+              <el-button type="primary" @click="search('formInline')">查询</el-button>
             </el-form-item>
         </el-form>
         </div>
@@ -42,14 +40,15 @@
             label="结束时间">
           </el-table-column>
           <el-table-column
-            prop="kpiCategory"
+            prop="assessmentDate"
             label="周期">
           </el-table-column>
           <el-table-column 
             prop="users"
             label="成员">
             <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index<3" >{{(index==(scope.row.users.length-1) || index>=2)?item.realName+"...":item.realName+","}}</span>
+                 <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index>3">{{((scope.row.users.length-1)>2 && index>=2)?item.realName+"...":item.realName+","}}</span>
+                <span v-else>{{item.realName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -126,13 +125,16 @@ export default {
    font-weight: bold;
   }
  .personnel .divMain .el-input__inner{
-   width: 120px;
+   /* width: 120px; */
    height: 40px;
    line-height: 40px;
    font-size: 16px;
   }
   .personnel form.el-form .el-form-item{
-    width: 190px;
+    width: 230px;
+  }
+  .personnel .divMain .el-form-item__content .el-date-editor.el-input{
+    width: 100%;
   }
  .personnel .divMain .el-button--small, .el-button--small.is-round{
    height: 40px;

@@ -1,251 +1,297 @@
 <!-- 评分详情 -->
 <template>
-  <div class="personnel " id='assess'>
+  <div class="personnel" id="assess">
     <div class="KPIAssess">
-        <h1>考核评分</h1>
-        <h2>考核模板名称</h2>
-        <p></p>
-        <el-form :model="forms" ref="forms" :rules="rules">
-            <el-table
-        border
-        :data="forms.tableData"
-        show-summary
-        style="width:100%"
-        sum-text='总分'
-        span-method	="getSummaries"
-        height="600">
-        <el-table-column
-        fixed
-        prop="content"
-        label="考核内容"
-        width="500"
+      <h1>考核评分</h1>
+      <h2>{{ tableForm.assignmentMouldName }}</h2>
+      <p></p>
+      <el-form
+        :model="tableForm.assignmentItems.userItems"
+        ref="tableForm"
+        :rules="rules"
+      >
+        <el-table
+          border
+          :data="tableForm.assignmentItems"
+          ref="table"
+          style="width: 100%"
+          show-summary
+          :summary-method="getSummaries"
+          max-height="600"
         >
-        
-        </el-table-column>
-         <el-table-column
-        fixed
-        prop="department"
-        label="部门"
-        width="100">
-        </el-table-column>
-        <el-table-column
-        fixed
-        prop="num"
-        label="总分"
-        width="50">
-        </el-table-column>
-       
-        <el-table-column
-        v-for='item in forms.tableData'
-        prop='num'
-        :label="item.name"
-        :key='item.key'
-        width="100"
-        >
-        </el-table-column>
-        <el-table-column
+          <el-table-column label="部门:网络绩效考核">
+            <el-table-column
+              fixed
+              prop="kpiName"
+              label="考核内容"
+              min-width="100"
+            >
+            </el-table-column>
+            <el-table-column fixed prop="score" label="总分" width="100">
+            </el-table-column>
+            <el-table-column fixed prop="kaohe" label="考核标准">
+              <template slot-scope="scope">
+                <div
+                  v-for="item in scope.row.memoItems"
+                  :key="item.memo"
+                  class="boxItem"
+                >
+                  {{ item.memo }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              v-for="(it, index) in tableForm.assignmentItems[0].userItems"
+              :label="it.realName"
+              :key="it.userId"
+              width="100"
+              align="center"
+              prop="factScore"
+            >
+              <template slot-scope="scope">
+                {{ scope.row.userItems[index].factScore }}
+              </template>
+            </el-table-column>
+            <!-- <el-table-column
             fixed="right"
         prop="Assessor"
         label="考评人"
         width="100">
-        </el-table-column>
-       <!--  <el-table-column
-        fixed="right"
-        label="操作"
-        width="100">
-        <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-        </template>
         </el-table-column> -->
-            </el-table>
-            <div class="button_bottom">
-             <el-form-item>
-                  <el-button type="primary" @click="submitForm('forms')">提交</el-button>
-                  <el-button >返回</el-button>
-                </el-form-item>
-            </div>
-        </el-form>
-        
+          </el-table-column></el-table
+        >
+        <div class="button_bottom">
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('assignmentItems')"
+              >提交</el-button
+            >
+            <el-button
+              ><router-link to="/dashboard">返回</router-link></el-button
+            >
+          </el-form-item>
+        </div>
+      </el-form>
     </div>
   </div>
 </template>
 
 <script>
-   export default {
-    data() {
-        return {
-            forms:{
-                tableData: [
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '7',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '5',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '8',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                    {
-                        content: '能否总是在规定期限内完成工作？或者尚能在规定的时限内完成工作，还是经常需要上级的催促才能按时完成工作？',
-                        name: '王小虎',
-                        num: '10',
-                        department: '网络',
-                        Assessor: 'Tom',
-                    },
-                ]
-            },
-            rules: {
-                num: [{ required: true, message: '数量不能为空', trigger: 'blur' }],
+export default {
+  data() {
+    return {
+      tableForm: {
+        assignmentId: "",
+        assignmentMouldName: "",
+        assignmentItems: [{}],
+      },
+      userItems: [],
+      rules: {
+        num: [{ required: true, message: "数量不能为空", trigger: "blur" }],
+      },
+    };
+  },
 
+  components: {},
+  created() {
+    this.getKpiScoreDetail();
+  },
+  methods: {
+    //获取考核评分详情
+    getKpiScoreDetail() {
+      console.log(this.$route.query.id);
+      let assignmentId = { assignmentId: this.$route.query.id };
+      this.$http.get("kpi/auth/score/detail", assignmentId).then((res) => {
+        let data = res.data.data;
+        this.tableForm.assignmentId = data.assignmentId;
+        this.tableForm.assignmentMouldName = data.assignmentMouldName;
+        this.tableForm.assignmentItems = data.assignmentItems;
+      });
+    },
+    getSummaries(param) {
+      const { columns, data } = param;
+      let sums = [];
+      let score = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "总分";
+          return;
+        }
+
+        const values = data.map((item, index) => {
+          if (column.property != "factScore") {
+            return Number(item[column.property]);
+          } else {
+            return item.userItems.map((it, i) => {
+              return Number(it.factScore);
+            });
+          }
+        });
+        console.log(values,'')
+        if (!values.every((value) => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return Number(prev) + Number(curr);
+            } else {
+              return prev;
             }
-            
+          }, 0);
+        } else {
+          if (values.every((val) => Array.isArray(val))) {
+            console.log('array')
+            score = values.reduce((pre, cur, i, arr) => {
+              return this.plus(pre, cur);
+            });
+          } else {
+            sums[index] = "";
+          }
+        }
+      });
 
-        };
+      let sumss = [...sums, ...score];
+      return sumss;
     },
 
-    components: {},
-
-    methods: {
-        getsummarier(params){
-          const {columns,data}=params;
-          const sum=[];
-          columns.forEach((column,index)=>{
-            if(index==0){
-              sums[index]='总分';
-              return;
-            }
-          })
-
-        }
-    }
-}
-
+    plus(a, b) {
+      return a.map(function (e, i) {
+        console.log(e, "e");
+        return e + b[i];
+      });
+    },
+    submitForm(formName) {
+      this.$confirm("确定考核提交吗？提交之后不能修改。", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$http
+            .post("kpi/auth/score/save", JSON.stringify(this.tableForm))
+            .then((res) => {
+              if (res.status == 200) {
+                this.$message({
+                  type: "success",
+                  message: "考核成功",
+                });
+                this.$router.push("/KPIScore");
+              }
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+  },
+  updated() {
+    this.$nextTick(() => {
+      this.$refs["table"].doLayout();
+    });
+  },
+};
 </script>
 <style>
- .personnel h1, h2 {
-    /* font-weight: normal; */
-    margin: 0;
-  }
-  .personnel ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  .personnel li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-  .personnel a {
-    color: #42b983;
-  }
-  .personnel{
+.personnel h1,
+h2 {
+  /* font-weight: normal; */
+  margin: 0;
+}
+.personnel ul {
+  list-style-type: none;
+  padding: 0;
+}
+.personnel li {
+  display: inline-block;
+  margin: 0 10px;
+}
+.personnel a {
+  color: #42b983;
+}
+.personnel {
   width: 100%;
-  height: 100%;  
-  }
-  .personnel h1{
-    font-size: 30px;
-  }
+  height: 100%;
+}
+.personnel h1 {
+  font-size: 30px;
+}
 
- .personnel .divMain .el-form-item__label{
-   font-size: 16px;
-   font-weight: bold;
-  }
-  .KPIAssess{
-      background-color: #fff;
-       padding: 40px 24px;
-       box-sizing: border-box;
-  }
-  .KPIAssess h1{
-     padding-bottom: 32px;
-  }
-  .KPIAssess h2{
-      text-align: center;
-     padding-bottom: 12px;
-  }
- .personnel .divMain .el-input__inner{
-   width: 120px;
-   height: 40px;
-   line-height: 40px;
-   font-size: 16px;
-  }
-  #assess form.el-form .el-table .el-form-item {
-    width: 80px;
-  }
-  #assess form.el-form .button_bottom .el-form-item {
-    margin:30px auto;
-    width: 240px;
-  }
-  #assess form.el-form  .el-form-item .el-form-item__content button.el-button{
-    font-size: 16px;
-  }
- .personnel .divMain .el-button--small, .el-button--small.is-round{
-   height: 40px;
-   font-size: 16px;
-  }
- .personnel .el-table th, .el-table .has-gutter tr:first-child{
-   background-color: #FAFAFA;
-   color: #000;
-  }
- .personnel .el-table th, .el-table{
-   color: #000;
-   font-size: 14px;
-  }
+.personnel .divMain .el-form-item__label {
+  font-size: 16px;
+  font-weight: bold;
+}
+.KPIAssess {
+  background-color: #fff;
+  padding: 40px 24px;
+  box-sizing: border-box;
+}
+.KPIAssess h1 {
+  padding-bottom: 32px;
+}
+.KPIAssess h2 {
+  text-align: center;
+  padding-bottom: 12px;
+}
+.personnel .divMain .el-input__inner {
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+}
+#assess form.el-form .el-table .el-form-item {
+  width: 80px;
+}
+#assess form.el-form .button_bottom .el-form-item {
+  margin: 30px auto;
+  width: 240px;
+}
+#assess form.el-form .el-form-item .el-form-item__content button.el-button {
+  font-size: 16px;
+}
+.personnel .divMain .el-button--small,
+.el-button--small.is-round {
+  height: 40px;
+  font-size: 16px;
+}
+.personnel .el-table th,
+.el-table .has-gutter tr:first-child {
+  background-color: #fafafa;
+  color: #000;
+}
+.personnel .el-table th,
+.el-table {
+  color: #000;
+  font-size: 14px;
+}
 
- .personnel .block{ 
-    margin-top: 32px;
-  }
-  .propBox{
-    margin: auto;
-  }
-  .propBox h2,
-  .propBox p{
-   text-align: center;
-  }
-  .propBox .el-form{
-    width: 90%;
-  }
-
-.el-table__fixed-body-wrapper{
-  height: 500px!important;
+.personnel .block {
+  margin-top: 32px;
+}
+.propBox {
+  margin: auto;
+}
+.propBox h2,
+.propBox p {
+  text-align: center;
+}
+.propBox .el-form {
+  width: 90%;
+}
+.cell .boxItem:last-child {
+  border-bottom: none;
+}
+.boxItem {
+  padding: 10px 0;
+  border-bottom: 1px solid #ebeef5;
+}
+.KPIAssess tbody .el-table__row td:nth-of-type(3) {
+  padding: 0;
+}
+.KPIAssess tbody .el-table__row td:nth-of-type(3) .cell {
+  padding: 0;
+}
+.has-gutter .is-hidden .cell {
+  visibility: visible;
 }
 </style>

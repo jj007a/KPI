@@ -42,21 +42,12 @@
       </el-dialog>
         <h1>人员管理</h1>
         <div class="divMain">
-          <el-form :inline="true" :model="formInline" class="demo-form-inline">
+          <el-form :inline="true" :model="pageable" ref="pageable" class="demo-form-inline">
             <el-form-item label="姓名：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="部门：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="职位：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="角色：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+              <el-input v-model="pageable.searchPropertyValue" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" >查询</el-button>
+              <el-button type="primary" @click="search('pageable')">查询</el-button>
               <el-button type="primary" @click="dialogVisible = true">添加</el-button>
             </el-form-item>
         </el-form>
@@ -151,7 +142,7 @@ export default {
     margin-top: 32px;
   }
   .personnel form.el-form .el-form-item{
-    width: 190px;
+    width: 230px;
   }
  .personnel .divMain .el-form-item__label{
    font-size: 16px;

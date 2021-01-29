@@ -18,6 +18,7 @@ const store = new Vuex.Store({
         userName: Cookies.get('User-Name'),
         password:'', 
         userInfo:[],
+        depId:'',
         /* pageable:{
             pageNumber:1,
             pageSize:10
@@ -25,9 +26,10 @@ const store = new Vuex.Store({
     },
     getters:{
         token: state => state.token,  
-        name: state => state.userName,
+        userName: state => state.userName,
         userId: state => state.userId,
-        userInfo: state => state.userInfo
+        userInfo: state => state.userInfo,
+        depId: state => state.depId
     },
     mutations:{
         setRouterName(state,obj){
@@ -82,14 +84,17 @@ const store = new Vuex.Store({
        SET_ID(state,id){
            state.userId=id       
         },
-       SET_NAME(state,name){
-           state.name=name       
+        SET_NAME(state, userName){
+           state.userName = userName       
         },
        SET_PASS(state,password){
          state.password=password       
         },
         SET_INFO(state,userInfo){
             state.userInfo = userInfo
+        },
+        SET_DEPID(state,depId){
+            state.depId = depId
         }
      
     },
@@ -103,9 +108,9 @@ const store = new Vuex.Store({
                         Cookies.set('Admin-Token', data.data.token);
                         Cookies.set('User-Id', data.data.currentUserId);
                         Cookies.set('User-Name', userInfo.username)
+                        commit('SET_NAME', userInfo.username)
                         commit('SET_ID', data.data.currentUserId);
                         commit('SET_TOKEN', data.data.token);
-                        // commit('SET_NAME', userInfo.user);
                         resolve(response);
                     }else{
                         resolve(response)
@@ -123,6 +128,7 @@ const store = new Vuex.Store({
                     Cookies.remove('Admin-Token') 
                     Cookies.remove('User-Id') 
                     Cookies.remove('User-Name') 
+                    sessionStorage.removeItem('roles')
                     commit('SET_INFO', []);
                     resolve()     
                 }).catch(erro=>{

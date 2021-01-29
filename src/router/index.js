@@ -85,7 +85,7 @@ const routes=[
                 name: 'detail',
                 component: detail
             },
-            { path: '/dashboard/view', name: 'view', component: view }
+            { path: '/dashboard/detail', name: 'detail', component: view },
         ]
     },
 
@@ -97,7 +97,7 @@ const router=new Router({
 })
 router.beforeEach((to, from, next) => {
     if(store.getters.token){
-        console.log(store.getters.token,'23')
+        // console.log(store.getters.token,'23')
         if(to.path=='/login'){
             next({ path: '/dashboard' })
         }else{

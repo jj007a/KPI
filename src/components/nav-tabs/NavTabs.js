@@ -27,7 +27,7 @@ export default {
                     this.$router.push({path:obj.url})
                 }, 0);
             }else{
-                this.$router.push({path:targetName})
+                // this.$router.push({path:targetName})
             }
             this.$store.commit('deleteRouterName',targetName)
             

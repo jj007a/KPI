@@ -12,8 +12,8 @@
                 <h1 class="fl">绩效考核管理系统</h1>
                 <div class="fr">
                     <ul class="header-person">
-                        <li><span>你好，{{$store.getters.username}}</span></li>
-                        <li><a href="javascript:;"><i class="el-icon-location"></i>修改密码</a></li>
+                        <li><span>你好，{{$store.getters.userName}}</span></li>
+                      <!--   <li><a href="javascript:;"><i class="el-icon-location"></i>修改密码</a></li> -->
                         <li @click='loginout' class="logout"><i class="el-icon-location "></i>退出></li>
                     </ul>
                 </div>

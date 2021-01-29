@@ -52,14 +52,29 @@ export default {
                 this.getDepartment() 
             })
         },
+        //获取人员列表
         getDepartment(){
-            console.log(123)
             var params =JSON.stringify( { pageNumber: 1, pageSize: 10})
             this.$http.get(
                 'kpi/auth/dep/list',
                 params
             ).then(res=>{
-                this.tableData=res.data.data
+                if (res.data.status == 200) {
+                    this.tableData = res.data.data
+                }else if(res.data.status==401){
+                    this.$message({
+                        type: "error",
+                        message: `登录已过期,${res.data.msg}`
+                    })
+                    this.$store.dispatch('LoginOut')
+                    this.$router.push('/login')
+                }else{
+                    this.$message({
+                        type: "error",
+                        message: `${res.data.msg}`
+                    })
+                }
+                
             }).catch(erro=>{
                 this.$message({
                     message:erro.message,
@@ -68,6 +83,7 @@ export default {
             })
            
         },
+        //新增
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

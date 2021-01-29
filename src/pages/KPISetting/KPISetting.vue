@@ -25,10 +25,16 @@
               </el-col>
           </el-form-item>
           <el-form-item label="考核周期：">
-             <el-select v-model="tableData.kpiCategory" placeholder="请选择周期" style="width: 100%;">
+             <!-- <el-select v-model="tableData.kpiCategory" placeholder="请选择周期" style="width: 100%;">
                 <el-option v-for="(val,key) in categoryList" :key="key"  :label="val" :value="key"></el-option>
                 
-              </el-select>
+              </el-select> -->
+               <el-date-picker
+                  v-model="tableData.assessmentDate"
+                  type="month"
+                  value-format='yyyy-MM-dd HH:mm:ss'
+                  placeholder="选择年">
+    </el-date-picker>
           </el-form-item>
           <el-form-item label="考核对象：">
               <el-select v-model="tableData.userIds" multiple placeholder="请选择" style="width: 100%;" @change="dataUpdate">
@@ -99,21 +105,20 @@
         </el-dialog>
         <h1>绩效设置</h1>
         <div class="divMain">
-          <el-form :inline="true" :model="formInline" class="demo-form-inline">
-            <el-form-item label="姓名：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+          <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+            <el-form-item label="模板名称：">
+              <el-input v-model="formInline.kpiMouldName" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="部门：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="职位：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="角色：">
-              <el-input v-model="formInline.user" placeholder="请输入"></el-input>
+            <el-form-item label="周期：">
+              <el-date-picker
+                    v-model="formInline.assessmentDate"
+                    type="month"
+                    value-format='yyyy-MM-dd HH:mm:ss'
+                    placeholder="选择月">
+                  </el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" >查询</el-button>
+              <el-button type="primary" @click="search('formInline')">查询</el-button>
               <el-button type="primary" @click="addProp">添加绩效</el-button>
             </el-form-item>
         </el-form>
@@ -136,14 +141,15 @@
             label="结束时间">
           </el-table-column>
           <el-table-column
-            prop="kpiCategory"
+            prop="assessmentDate"
             label="周期">
           </el-table-column>
           <el-table-column 
             prop="users"
             label="成员">
             <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index<3">{{(index==(scope.row.users.length-1) || index>=2)?item.realName+"...":item.realName+","}}</span>
+                <span v-for="(item,index) in scope.row.users" :key="item.id" v-if="index>3">{{((scope.row.users.length-1)>2 && index>=2)?item.realName+"...":item.realName+","}}</span>
+                <span v-else>{{item.realName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -154,6 +160,7 @@
           <el-button
             size="mini"
             type="danger"
+            v-if="!scope.row.isEnd"
             @click="del(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -227,7 +234,7 @@ export default {
     margin-top: 32px;
   }
   .personnel form.el-form .el-form-item{
-    width: 190px;
+    width: 230px;
   }
  .personnel .divMain .el-form-item__label{
    font-size: 16px;
@@ -236,6 +243,9 @@ export default {
   }
  .personnel .divMain .el-form-item__content{
     width: 60%;
+  }
+ .personnel .divMain .el-form-item__content .el-date-editor.el-input{
+    width: 100%;
   }
  .personnel .divMain .el-form-item:last-child{
     margin-left: 20px;
@@ -273,7 +283,7 @@ export default {
   .propBox .el-input--small .el-input__inner,
   .editProp .el-input--small .el-input__inner{
    height: 40px;
-  }
+  } 
   .personnel .el-dialog__footer{
     text-align: center;
   }
