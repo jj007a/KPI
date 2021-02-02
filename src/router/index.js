@@ -8,6 +8,9 @@ import kpiSetting from '../pages/KPISetting/KPISetting.vue'
 import kpiScore from '../pages/KPIScore/KPIScore.vue'
 import detail from '../pages/KPIScore/Detail.vue'
 import view from '../pages/dashboard/view'
+import role from '../pages/roleManagement/roleManagement'
+import jurisdiction from '../pages/jurisdictionManagement/jurisdictionManagement'
+import user from '../pages/user/user'
 
 import notfind from '../pages/notfind/notfind'
 import dashboard from '../pages/dashboard/dashboard'
@@ -25,6 +28,11 @@ const routes=[
         path: '/login',
         name: 'login',
         component: login
+    },
+    {
+        path: '/404',
+        name: 'not found',
+        component: notfind
     },
     {
         path: '/register',
@@ -53,7 +61,7 @@ const routes=[
                 name: 'department',
                 meta: {
                     requireAuth: true,
-                    role:['admin']
+                    role:['super']
                 },
                 component: department
             },
@@ -86,11 +94,19 @@ const routes=[
                 component: detail
             },
             { path: '/dashboard/detail', name: 'detail', component: view },
+            {path:'/roleManagement',name:'role',component:role},
+            { path: '/jurisdictionManagement', name: 'jurisdiction', component: jurisdiction},
+            { path: '/user', name: 'user', component: user}
         ]
     },
 
-
 ]
+// permissiom judge
+function hasPermission(roles, permissionRoles) {
+    if (roles.indexOf('admin') >= 0) return true // admin权限 直接通过
+    if (!permissionRoles) return true
+    return roles.some(role => permissionRoles.indexOf(role) >= 0)
+}
 const router=new Router({
     routes,
     // mode:"history"
@@ -101,13 +117,43 @@ router.beforeEach((to, from, next) => {
         if(to.path=='/login'){
             next({ path: '/dashboard' })
         }else{
-          /*  if(store.getters.userInfo.length==0){
-               store.dispatch('GetUserInfo', store.getters.userId)
-               next()
+            
+           if(store.getters.roles.length==0){
+               store.dispatch('GetUserInfo').then(res=>{
+                  
+                   if (res.data.data && to.meta.role){
+                    const roles = res.data.data.roles
+                       console.log(roles[0].roleName, to.meta.role,999);
+                       if (to.meta.role.includes(roles[0].roleName)){
+                       next()
+                    }else{
+                       next('/404')
+                    }
+                   }else{
+                        next()
+                   }
+                  
+                   /* store.dispatch('GenerateRouters', roles).then(()=>{
+                        router.addRoutes(store.getters.addRouters)
+                        next({...to})
+                   }).catch(()=>{
+                       next({paten:'/login'})
+                   }) */
+               })
+              
            }else{
                next()
-           } */
-           next()
+              /*  store.dispatch('getNowRoutes', to)
+               console.log(999)
+               if (hasPermission(store.getters.roles, to.meta.role)) {
+                   next()//
+
+                   console.log("has userinfo")
+               } else {
+                   next({ path: '/' })
+               } */
+           }
+          
         }
     }else{
        if(to.path=='/login' || to.path=='/register'){

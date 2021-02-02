@@ -48,7 +48,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="search('pageable')">查询</el-button>
-              <el-button type="primary" @click="dialogVisible = true">添加</el-button>
+              <el-button type="primary" @click="dialogVisible = true" v-if="isAdd">添加</el-button>
             </el-form-item>
         </el-form>
         </div>
@@ -81,7 +81,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click="handleDelete(scope.$index, scope.row)" v-if="isDel">删除</el-button>
         </template>
       </el-table-column>
         </el-table>

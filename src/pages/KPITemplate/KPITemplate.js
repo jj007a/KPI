@@ -169,7 +169,8 @@ export default {
                     // this.dynamicValidateForm.department.id = this.$store.getters.depId
                     this.$http.post('kpi/auth/mould/save',
                         JSON.stringify(this.dynamicValidateForm)).then(res => {
-                            if (res.status == 200) {
+                            console.log(res)
+                            if (res.data.status == 200) {
                                 this.$message({
                                     type: 'success',
                                     message: '模板添加成功'
@@ -189,6 +190,16 @@ export default {
                                     mouldName: '',
                                     totalScore: ''
                                 }
+                            } else if (res.data.status == 401) {
+                                this.$message({
+                                    type: 'error',
+                                    message: '登录过去,请重新登录'
+                                })
+                            } else {
+                                this.$message({
+                                    type: 'error',
+                                    message: '服务端错误'
+                                })
                             }
 
                         })
@@ -204,7 +215,7 @@ export default {
                 if (valid) {
                     this.$http.post('kpi/auth/mould/update',
                         JSON.stringify(this.dynamicValidateForm)).then(res => {
-                            if (res.status == 200) {
+                            if (res.data.status == 200) {
                                 this.$message({
                                     type: 'success',
                                     message: '模板编辑成功'
@@ -227,6 +238,16 @@ export default {
                                 this.isView = false;
                                 this.isEdit = false;
 
+                            } else if (res.data.status == 401){
+                                this.$message({
+                                    type: 'error',
+                                    message: '登录过去,请重新登录'
+                                })
+                            }else{
+                                this.$message({
+                                    type: 'error',
+                                    message: res.data.msg
+                                }) 
                             }
 
                         })

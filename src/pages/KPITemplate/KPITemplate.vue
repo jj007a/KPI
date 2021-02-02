@@ -84,7 +84,7 @@
               <el-button @click.prevent="removeDomain(mouldItem)"
                 >删除</el-button
               >
-               <el-button @click="addStandard(mouldItem)">新增考核标准</el-button>
+               <el-button @click="addStandard(mouldItem)">新增标准</el-button>
             </el-form-item>
           </div>
             <div class="kpiStandard" v-for="(its,index) in mouldItem.memoItems" :key="its.index">
@@ -155,7 +155,7 @@
         >
          {{(index+1)+'.'}} {{ o.kpiName }}  (<span style="color: red">{{ o.score }}分</span>)
         </div>
-        <div v-else>3. ....</div>
+        <div v-else>{{index+1==3?index+1+"...":""}}</div>
       </el-card>
     </div>
   </div>

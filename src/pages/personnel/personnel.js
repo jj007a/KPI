@@ -10,32 +10,10 @@ export default {
             tableData: {
                 department: {
                     id: "",
-                   /*  manager: "",
-                    name: "", */
                 },
                 /* id: "", */
                 realName: "",
                 position:"",
-               /*  roles: [
-                    {
-                        id: "",
-                        permissions: [
-                            {
-                                id: 0,
-                                permCode: string,
-                                permName: string,
-                                requestPath: string,
-                                rolePermissions: [
-                                    {
-                                        id: 0
-                                    }
-                                ]
-                            }
-                        ],
-                        roleName: string
-                    }
-                ], */
-                // serialNumber: string,
                 username: ""
             },
             value: false,
@@ -51,13 +29,16 @@ export default {
                 searchPropertyValue:"",
                 searchProperty:'u.realName',
             },
-            totals:40
+            totals:40,
+            isDel:false,
+            isAdd:false
         }
 
     },
     created() {
         this.getDepartment()
         this.personInfo()
+        this.authority()
     },
     methods: {
         handleEdit(index, row) {
@@ -134,7 +115,7 @@ export default {
                 if(res.data.status==200){
                     this.personList = res.data.data.data
                     this.pageable = res.data.data.pageable
-                    this.totals = res.data.data.totalPages
+                    this.totals = res.data.data.total
                 }else if(res.data.status==401){
                     this.$message({
                         type: "error",
@@ -210,6 +191,23 @@ export default {
                 }
             })
         },
+        authority(){
+            if(this.$store.getters.roles.length>0){
+                const roles=this.$store.getters.roles;
+                console.log(roles)
+                roles[0].permissions.forEach(item=>{
+                    switch (item.permCode){
+                        case "perms[user:delete]":
+                            this.isDel=true;
+                            break;
+                        case "perms[user:add]":
+                            this.isAdd=true;
+                            break;
+                            
+                    }
+                })
+            }
+        }
 
     },
 

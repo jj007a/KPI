@@ -19,7 +19,7 @@
           :summary-method="getSummaries"
           max-height="600"
         >
-          <el-table-column label="部门:网络绩效考核">
+          <el-table-column :label="tableForm.departmentName">
             <el-table-column
               fixed
               prop="kpiName"
@@ -62,9 +62,9 @@
         >
         <div class="button_bottom">
           <el-form-item>
-            <el-button type="primary" @click="submitForm('assignmentItems')"
+           <!--  <el-button type="primary" @click="submitForm('assignmentItems')"
               >提交</el-button
-            >
+            > -->
             <el-button
               ><router-link to="/dashboard">返回</router-link></el-button
             >
@@ -105,6 +105,7 @@ export default {
         this.tableForm.assignmentId = data.assignmentId;
         this.tableForm.assignmentMouldName = data.assignmentMouldName;
         this.tableForm.assignmentItems = data.assignmentItems;
+        this.tableForm.departmentName=`部门: ${data.departmentName}一考核月度: ${this.$moment(data.assessmentDate).format('MM')}月`;
       });
     },
     getSummaries(param) {
@@ -113,7 +114,7 @@ export default {
       let score = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = "总分";
+          sums[index] = "合计";
           return;
         }
 
