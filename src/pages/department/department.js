@@ -19,6 +19,8 @@ export default {
                 id:''
             },
             dialogVisible: false,
+            isDel: false,
+            isAdd: false
         }
         
     },
@@ -107,6 +109,28 @@ export default {
           }
         });
       },
+      //权限管理
+
+        authority() {
+            if (this.$store.getters.roles.length > 0) {
+                const roles = this.$store.getters.roles;
+                console.log(roles)
+                roles[0].permissions.forEach(item => {
+                    switch (item.permCode) {
+                        case "perms[department:delete]":
+                            this.isDel = true;
+                            break;
+                        case "perms[department:add]":
+                            this.isAdd = true;
+                            break;
+                        case "perms[department:edit]":
+                            this.isEdit = true;
+                            break;
+
+                    }
+                })
+            }
+        }
         
     },
     computed:{

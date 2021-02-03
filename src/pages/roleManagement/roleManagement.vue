@@ -148,7 +148,7 @@ export default {
       })
         .then(() => {
           this.$http
-            .post("kpi/auth/role/delete", { id: row.id })
+            .post("kpi/auth/role/delete", JSON.stringify({ id: row.id }))
             .then((res) => {
               this.$message({
                 type: "success",

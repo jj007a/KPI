@@ -9,7 +9,7 @@
         background-color="#002140"
         text-color="#fff"
         active-text-color="#ffd04b">
-        <el-submenu v-for="item in routerNavslist" :key="item.url" :index="item.name">
+        <el-submenu v-for="item in newRouterNavsList" :key="item.url" :index="item.name">
             <template slot="title">
             <i :class="item.icon"></i>
             <span slot="title">{{item.name}}</span>

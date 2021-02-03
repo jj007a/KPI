@@ -46,7 +46,7 @@
                     required: true, message: '内容不能为空', trigger: 'blur'
                   }"
                 >
-                  <el-input placeholder="请输入部门负责人" v-model="departmentForm.manager"></el-input><el-button type="primary" @click.prevent="submitForm('departmentForm')" >提交</el-button>
+                  <el-input placeholder="请输入部门负责人" v-model="departmentForm.manager"></el-input><el-button type="primary" @click.prevent="submitForm('departmentForm')" v-if="isAdd" >提交</el-button>
                 </el-form-item>
             </el-form>
             </div>
@@ -73,11 +73,11 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row.id)">编辑</el-button>
+                @click="handleEdit(scope.$index, scope.row.id)" v-if="isEdit">编辑</el-button>
               <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row.id)">删除</el-button>
+                @click="handleDelete(scope.$index, scope.row.id)" v-if="isDel">删除</el-button>
             </template>
           </el-table-column>
             </el-table>
