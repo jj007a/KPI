@@ -195,7 +195,6 @@ export default {
         authority(){
             if(this.$store.getters.roles.length>0){
                 const roles=this.$store.getters.roles;
-                console.log(roles)
                 roles[0].permissions.forEach(item=>{
                     switch (item.permCode){
                         case "perms[user:delete]":

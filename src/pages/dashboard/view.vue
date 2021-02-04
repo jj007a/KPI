@@ -5,10 +5,7 @@
       <h1>考核评分</h1>
       <h2>{{ tableForm.assignmentMouldName }}</h2>
       <p></p>
-      <el-form
-        :model="tableForm.assignmentItems.userItems"
-        ref="tableForm"
-      >
+      <el-form :model="tableForm.assignmentItems.userItems" ref="tableForm">
         <el-table
           border
           :data="tableForm.assignmentItems"
@@ -20,24 +17,15 @@
           max-height="600"
         >
           <el-table-column :label="tableForm.departmentName">
-            <el-table-column
-              fixed
-              prop="kpiName"
-              label="考核内容"
-              min-width="100"
-            >
-            </el-table-column>
-            <el-table-column fixed prop="score" label="总分" width="100">
-            </el-table-column>
+            <el-table-column fixed prop="kpiName" label="考核内容" min-width="100"></el-table-column>
+            <el-table-column fixed prop="score" label="总分" width="100"></el-table-column>
             <el-table-column fixed prop="kaohe" label="考核标准">
               <template slot-scope="scope">
                 <div
                   v-for="item in scope.row.memoItems"
                   :key="item.memo"
                   class="boxItem"
-                >
-                  {{ item.memo }}
-                </div>
+                >{{ item.memo }}</div>
               </template>
             </el-table-column>
             <el-table-column
@@ -48,29 +36,25 @@
               align="center"
               prop="factScore"
             >
-              <template slot-scope="scope">
-                {{ scope.row.userItems[index].factScore }}
-              </template>
+              <template slot-scope="scope">{{ scope.row.userItems[index].factScore }}</template>
             </el-table-column>
             <!-- <el-table-column
             fixed="right"
         prop="Assessor"
         label="考评人"
         width="100">
-        </el-table-column> -->
-          </el-table-column></el-table
-        >
+            </el-table-column>-->
+          </el-table-column>
+        </el-table>
         <div class="button_bottom">
           <el-form-item>
-           <!--  <el-button type="primary" @click="submitForm('assignmentItems')"
+            <!--  <el-button type="primary" @click="submitForm('assignmentItems')"
               >提交</el-button
-            > -->
-            <el-button
-             @click="exportExcel" >下载</el-button
-            >
-            <el-button
-              ><router-link to="/dashboard">返回</router-link></el-button
-            >
+            >-->
+            <el-button @click="exportExcel">下载</el-button>
+            <el-button>
+              <router-link to="/dashboard">返回</router-link>
+            </el-button>
           </el-form-item>
         </div>
       </el-form>
@@ -79,18 +63,17 @@
 </template>
 
 <script>
- import FileSaver from "file-saver";
-  import XLSX from "xlsx";
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   data() {
     return {
       tableForm: {
         assignmentId: "",
         assignmentMouldName: "",
-        assignmentItems: [{}],
+        assignmentItems: [{}]
       },
-      userItems: [],
-     
+      userItems: []
     };
   },
 
@@ -103,12 +86,14 @@ export default {
     getKpiScoreDetail() {
       console.log(this.$route.query.id);
       let assignmentId = { assignmentId: this.$route.query.id };
-      this.$http.get("kpi/auth/score/detail", assignmentId).then((res) => {
+      this.$http.get("kpi/auth/score/detail", assignmentId).then(res => {
         let data = res.data.data;
         this.tableForm.assignmentId = data.assignmentId;
         this.tableForm.assignmentMouldName = data.assignmentMouldName;
         this.tableForm.assignmentItems = data.assignmentItems;
-        this.tableForm.departmentName=`部门: ${data.departmentName}一考核月度: ${this.$moment(data.assessmentDate).format('MM')}月`;
+        this.tableForm.departmentName = `部门: ${
+          data.departmentName
+        }一考核月度: ${this.$moment(data.assessmentDate).format("MM")}月`;
       });
     },
     getSummaries(param) {
@@ -130,8 +115,8 @@ export default {
             });
           }
         });
-        console.log(values,'')
-        if (!values.every((value) => isNaN(value))) {
+        console.log(values, "");
+        if (!values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
@@ -141,8 +126,8 @@ export default {
             }
           }, 0);
         } else {
-          if (values.every((val) => Array.isArray(val))) {
-            console.log('array')
+          if (values.every(val => Array.isArray(val))) {
+            console.log("array");
             score = values.reduce((pre, cur, i, arr) => {
               return this.plus(pre, cur);
             });
@@ -157,7 +142,7 @@ export default {
     },
 
     plus(a, b) {
-      return a.map(function (e, i) {
+      return a.map(function(e, i) {
         console.log(e, "e");
         return e + b[i];
       });
@@ -166,16 +151,16 @@ export default {
       this.$confirm("确定考核提交吗？提交之后不能修改。", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           this.$http
             .post("kpi/auth/score/save", JSON.stringify(this.tableForm))
-            .then((res) => {
+            .then(res => {
               if (res.status == 200) {
                 this.$message({
                   type: "success",
-                  message: "考核成功",
+                  message: "考核成功"
                 });
                 this.$router.push("/KPIScore");
               }
@@ -184,29 +169,34 @@ export default {
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除",
+            message: "已取消删除"
           });
         });
     },
     //导出数据
-      exportExcel () {
-        let wb = XLSX.utils.table_to_book(document.querySelector('#table'));   // 这里就是表格
-        let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' });
-        try {
-          FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'table.xlsx');  //table是自己导出文件时的命名，随意
-        } catch (e)
-        {
-          if (typeof console !== 'undefined')
-            console.log(e, wbout)
-        }
-        return wbout
-      },
+    exportExcel() {
+      let wb = XLSX.utils.table_to_book(document.querySelector("#table")); // 这里就是表格
+      let wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array"
+      });
+      try {
+        FileSaver.saveAs(
+          new Blob([wbout], { type: "application/octet-stream" }),
+          "table.xlsx"
+        ); //table是自己导出文件时的命名，随意
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
+      }
+      return wbout;
+    }
   },
   updated() {
     this.$nextTick(() => {
       this.$refs["table"].doLayout();
     });
-  },
+  }
 };
 </script>
 <style>
@@ -311,10 +301,10 @@ h2 {
 .has-gutter .is-hidden .cell {
   visibility: visible;
 }
- .el-table td.is-hidden .cell {
+.el-table td.is-hidden .cell {
   visibility: visible;
 }
-.KPIAssess tbody .el-table{
-  overflow:visible !important;
+.KPIAssess tbody .el-table {
+  overflow: visible !important;
 }
 </style>
