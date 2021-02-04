@@ -265,7 +265,7 @@ h2 {
 }
 .personnel {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 .personnelContent {
   width: 100%;
@@ -281,7 +281,7 @@ h2 {
   margin-top: 32px;
 }
 .personnel form.el-form .el-form-item {
-  width: 230px;
+  width: 240px;
 }
 .personnel .divMain .el-form-item__label {
   font-size: 16px;

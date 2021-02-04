@@ -264,7 +264,7 @@ export default {
   margin-top: 32px;
 }
 .index form.el-form .el-form-item {
-  width: 230px;
+  width: 240px;
 }
 
 .index .divMain .el-form-item__label {

@@ -77,7 +77,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            @click="handleEdit(scope.$index, scope.row)" v-if="isEdit">编辑</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -125,7 +125,7 @@ export default {
   }
   .personnel{
   width: 100%;
-  height: 100%;  
+  /* height: 100%;   */
   }
   .personnelContent{
     width: 100%;
@@ -142,7 +142,7 @@ export default {
     margin-top: 32px;
   }
   .personnel form.el-form .el-form-item{
-    width: 230px;
+    width: 240px;
   }
  .personnel .divMain .el-form-item__label{
    font-size: 16px;

@@ -8,12 +8,12 @@
       <el-form
         :model="tableForm.assignmentItems.userItems"
         ref="tableForm"
-        :rules="rules"
       >
         <el-table
           border
           :data="tableForm.assignmentItems"
           ref="table"
+          id="table"
           style="width: 100%"
           show-summary
           :summary-method="getSummaries"
@@ -66,6 +66,9 @@
               >提交</el-button
             > -->
             <el-button
+             @click="exportExcel" >下载</el-button
+            >
+            <el-button
               ><router-link to="/dashboard">返回</router-link></el-button
             >
           </el-form-item>
@@ -76,6 +79,8 @@
 </template>
 
 <script>
+ import FileSaver from "file-saver";
+  import XLSX from "xlsx";
 export default {
   data() {
     return {
@@ -85,9 +90,7 @@ export default {
         assignmentItems: [{}],
       },
       userItems: [],
-      rules: {
-        num: [{ required: true, message: "数量不能为空", trigger: "blur" }],
-      },
+     
     };
   },
 
@@ -185,6 +188,19 @@ export default {
           });
         });
     },
+    //导出数据
+      exportExcel () {
+        let wb = XLSX.utils.table_to_book(document.querySelector('#table'));   // 这里就是表格
+        let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' });
+        try {
+          FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'table.xlsx');  //table是自己导出文件时的命名，随意
+        } catch (e)
+        {
+          if (typeof console !== 'undefined')
+            console.log(e, wbout)
+        }
+        return wbout
+      },
   },
   updated() {
     this.$nextTick(() => {
@@ -212,7 +228,7 @@ h2 {
 }
 .personnel {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 .personnel h1 {
   font-size: 30px;
@@ -294,5 +310,11 @@ h2 {
 }
 .has-gutter .is-hidden .cell {
   visibility: visible;
+}
+ .el-table td.is-hidden .cell {
+  visibility: visible;
+}
+.KPIAssess tbody .el-table{
+  overflow:visible !important;
 }
 </style>

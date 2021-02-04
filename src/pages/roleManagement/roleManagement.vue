@@ -56,7 +56,7 @@
               <span v-if="scope.row.permissions.length > 1">
                 {{
                   scope.row.permissions.length - 1 == index
-                    ? item.permName + "..."
+                    ? item.permName + "."
                     : item.permName + ","
                 }}
               </span>
@@ -335,7 +335,7 @@ h2 {
   color: #42b983;
 }
 .personnel {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
 }
 .personnelContent {
@@ -353,7 +353,7 @@ h2 {
   margin-top: 32px;
 }
 .personnel form.el-form .el-form-item {
-  width: 230px;
+  width: 240px;
 }
 .personnel .divMain .el-form-item__label {
   font-size: 16px;

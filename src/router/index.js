@@ -22,7 +22,7 @@ import { TabPane } from 'element-ui'
 Vue.use(Router)
 
 // 路由完全配置，在pages.vue里面获取后台给的地址
-const routes=[
+const routes = [
 
     {
         path: '/login',
@@ -41,7 +41,7 @@ const routes=[
     },
     {
         path: '/',
-        name:'index',
+        name: 'index',
         redirect: '/dashboard',
         meta: {
             requireAuth: true,
@@ -61,7 +61,7 @@ const routes=[
                 name: 'department',
                 meta: {
                     requireAuth: true,
-                    role:['super']
+                    role: ['super']
                 },
                 component: department
             },
@@ -94,9 +94,9 @@ const routes=[
                 component: detail
             },
             { path: '/dashboard/detail', name: 'detail', component: view },
-            {path:'/roleManagement',name:'role',component:role},
-            { path: '/jurisdictionManagement', name: 'jurisdiction', component: jurisdiction},
-            { path: '/user', name: 'user', component: user}
+            { path: '/roleManagement', name: 'role', component: role },
+            { path: '/jurisdictionManagement', name: 'jurisdiction', component: jurisdiction },
+            { path: '/user', name: 'user', component: user }
         ]
     },
 
@@ -107,62 +107,57 @@ function hasPermission(roles, permissionRoles) {
     if (!permissionRoles) return true
     return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
-const router=new Router({
+const router = new Router({
     routes,
     // mode:"history"
 })
 router.beforeEach((to, from, next) => {
-    if(store.getters.token){
+    if (store.getters.token) {
         // console.log(store.getters.token,'23')
-        if(to.path=='/login'){
+        if (to.path == '/login') {
             next({ path: '/dashboard' })
-        }else{
-            
-           if(store.getters.roles.length==0){
-               store.dispatch('GetUserInfo').then(res=>{
-                  
-                   if (res.data.data && to.meta.role){
-                    const roles = res.data.data.roles
-                       console.log(roles[0].roleName, to.meta.role,999);
-                       if (to.meta.role.includes(roles[0].roleName)){
-                       next()
-                    }else{
-                       next('/404')
-                    }
-                   }else{
-                        next()
-                   }
-                  
-                   /* store.dispatch('GenerateRouters', roles).then(()=>{
-                        router.addRoutes(store.getters.addRouters)
-                        next({...to})
-                   }).catch(()=>{
-                       next({paten:'/login'})
-                   }) */
-               })
-              
-           }else{
-               next()
-              /*  store.dispatch('getNowRoutes', to)
-               console.log(999)
-               if (hasPermission(store.getters.roles, to.meta.role)) {
-                   next()//
+        } else {
 
-                   console.log("has userinfo")
-               } else {
-                   next({ path: '/' })
-               } */
-           }
-          
+            if (store.getters.roles.length == 0) {
+                store.dispatch('GetUserInfo').then(res => {
+                    next()
+                    // if (res.data.data && to.meta.role) {
+                    //     const roles = res.data.data.roles
+                    //     console.log(roles[0].roleName, to.meta.role, 999);
+                    //     if (to.meta.role.includes(roles[0].roleName)) {
+                    //         next()
+                    //     } else {
+                    //         next('/404')
+                    //     }
+                    // } else {
+                    //     next()
+                    // }
+
+                   
+                })
+
+            } else {
+                next()
+                /*  store.dispatch('getNowRoutes', to)
+                 console.log(999)
+                 if (hasPermission(store.getters.roles, to.meta.role)) {
+                     next()//
+  
+                     console.log("has userinfo")
+                 } else {
+                     next({ path: '/' })
+                 } */
+            }
+
         }
-    }else{
-       if(to.path=='/login' || to.path=='/register'){
-           next()
-       }else{
-           next({ path: '/login' })
-       }
+    } else {
+        if (to.path == '/login' || to.path == '/register') {
+            next()
+        } else {
+            next({ path: '/login' })
+        }
     }
 })
-    
+
 
 export default router

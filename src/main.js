@@ -17,7 +17,7 @@ import filterJson from './filters/filterJson'
 // 状态管理
 import Vuex from 'vuex'
 import store from './vuex/store'
-import moment from 'moment'//导入文件 
+import moment from 'moment'
 
 Vue.prototype.$moment = moment;//赋值使用
 Vue.prototype.$qs = qs

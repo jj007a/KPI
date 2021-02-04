@@ -36,7 +36,7 @@
             <el-form-item label="用户名：">
               <el-input v-model="tableData.username"></el-input>
             </el-form-item>
-            <el-form-item label="密码：">
+            <el-form-item label="密码：" v-if="addShow">
               <el-input type="password" v-model="tableData.password"></el-input>
             </el-form-item>
           </el-form>
@@ -315,6 +315,8 @@ export default {
     //添加 弹窗
     addProp() {
       this.dialogVisible = true;
+      this.addShow=true
+      this.editShow=false
       this.tableData = {
         department: {
           id: "",
@@ -425,7 +427,7 @@ h2 {
 }
 .personnel {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 .personnelContent {
   width: 100%;

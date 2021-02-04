@@ -20,12 +20,14 @@ export default {
             },
             dialogVisible: false,
             isDel: false,
-            isAdd: false
+            isAdd: false,
+            isEdit: false
         }
         
     },
     created() {
         this.getDepartment()
+        this.authority()
     },
     methods: {
         handleEdit(index, row) {
@@ -123,7 +125,7 @@ export default {
                         case "perms[department:add]":
                             this.isAdd = true;
                             break;
-                        case "perms[department:edit]":
+                        case "perms[department:update]":
                             this.isEdit = true;
                             break;
 
@@ -133,7 +135,5 @@ export default {
         }
         
     },
-    computed:{
-       
-    }
+   
 }

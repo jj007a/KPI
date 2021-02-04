@@ -182,7 +182,7 @@
             <el-button type="primary" @click="search('formInline')"
               >查询</el-button
             >
-            <el-button type="primary" @click="addProp">添加绩效</el-button>
+            <el-button type="primary" @click="addProp" v-if="isKpiAdd">添加绩效</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -206,13 +206,13 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="viewDetail(scope.row)"
+            <el-button size="mini" @click="viewDetail(scope.row)" v-if="isKpiEdit"
               >编辑</el-button
             >
             <el-button
               size="mini"
               type="danger"
-              v-if="!scope.row.isEnd"
+              v-if="!scope.row.isEnd && isKpiDel"
               @click="del(scope.row)"
               >删除</el-button
             >
@@ -261,7 +261,7 @@ h2 {
 }
 .personnel {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 .personnelContent {
   width: 100%;
@@ -292,7 +292,7 @@ h2 {
   margin-top: 32px;
 }
 .personnel form.el-form .el-form-item {
-  width: 230px;
+  width: 240px;
 }
 .personnel .divMain .el-form-item__label {
   font-size: 16px;

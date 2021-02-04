@@ -14,20 +14,22 @@ export default {
                 userIds: []
             },
             assignmentList: [],
-            currentPage4:1,
+            currentPage4: 1,
             values: false,
             dialogVisible: false,
-            score:'',
+            score: '',
             pageable: {
                 pageNumber: 1,
                 pageSize: 10
             },
-            totals: 40
+            totals: 40,
+            isScore: false,
         }
 
     },
     created() {
         this.getAssignmentList();
+        this.authority()
     },
     methods: {
         handleSizeChange(val) {
@@ -78,11 +80,11 @@ export default {
                     })
                 }
             })
-        },    
+        },
         //获取 设置列表
         getAssignmentList() {
             this.$http.get('kpi/auth/assignment/list', { pageNumber: 1, pageSize: 10 }).then(res => {
-                if(res.data.status==200){
+                if (res.data.status == 200) {
                     this.assignmentList = res.data.data.data
                     this.assignmentList.map(item => {
                         item.assessmentDate = this.$moment(item.assessmentDate).format('MM月')
@@ -92,23 +94,37 @@ export default {
                     })
                     this.pageable = res.data.data.pageable
                     this.totals = res.data.data.totalPages
-                } else if (res.data.status == 401){
+                } else if (res.data.status == 401) {
                     this.$message({
                         type: "error",
                         message: `登录已过期,${res.data.msg}`
                     })
                     this.$store.dispatch('LoginOut')
                     this.$router.push('/login')
-                }else{
+                } else {
                     this.$message({
                         type: "error",
                         message: `${res.data.msg}`
                     })
                 }
-                
+
             })
         },
-        
+        authority() {
+            if (this.$store.getters.roles.length > 0) {
+                const roles = this.$store.getters.roles;
+                console.log(roles)
+                roles[0].permissions.forEach(item => {
+                    switch (item.permCode) {
+                        case "perms[kpiScore:update]":
+                            this.isScore = true;
+                            break;
+                       
+
+                    }
+                })
+            }
+        }
 
     },
 

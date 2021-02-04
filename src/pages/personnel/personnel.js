@@ -31,7 +31,8 @@ export default {
             },
             totals:40,
             isDel:false,
-            isAdd:false
+            isAdd:false,
+            isEdit:false
         }
 
     },
@@ -202,6 +203,9 @@ export default {
                             break;
                         case "perms[user:add]":
                             this.isAdd=true;
+                            break;
+                        case "perms[user:update]":
+                            this.isEdit=true;
                             break;
                             
                     }
