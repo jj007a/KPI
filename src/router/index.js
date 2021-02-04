@@ -11,6 +11,7 @@ import view from '../pages/dashboard/view'
 import role from '../pages/roleManagement/roleManagement'
 import jurisdiction from '../pages/jurisdictionManagement/jurisdictionManagement'
 import user from '../pages/user/user'
+import userType from '../pages/user/userType'
 
 import notfind from '../pages/notfind/notfind'
 import dashboard from '../pages/dashboard/dashboard'
@@ -96,7 +97,8 @@ const routes = [
             { path: '/dashboard/detail', name: 'detail', component: view },
             { path: '/roleManagement', name: 'role', component: role },
             { path: '/jurisdictionManagement', name: 'jurisdiction', component: jurisdiction },
-            { path: '/user', name: 'user', component: user }
+            { path: '/user', name: 'user', component: user },
+            { path: '/userType', name: 'userType', component: userType }
         ]
     },
 

@@ -31,6 +31,7 @@ export default {
                         { name: '/roleManagement', url: '/roleManagement', title: '角色管理', icon: 'el-icon-document-checked', permCode: "perms[role:list]", },
                         { name: '/jurisdictionManagement', url: '/jurisdictionManagement', title: '权限设置', icon: 'el-icon-document-checked', permCode: "perms[auth]", },
                         { name: '/user', url: '/user', title: '用户管理', icon: 'el-icon-document-checked', permCode: "perms[user:list]" },
+                        { name: '/userType', url: '/userType', title: '用户类型', icon: 'el-icon-document-checked', permCode: "perms[userCategory:list]" },
                     ]
                 },
             ],
