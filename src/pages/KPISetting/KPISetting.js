@@ -29,12 +29,7 @@ export default {
         assessmentDate: ""
       },
       editFromLabel: {
-        name: '',
-        region: '',
-        type: '',
-        date1: '',
-        date2: '',
-        cycle: '',
+    
         options: [{
           value: '选项1',
           label: '黄金糕'
