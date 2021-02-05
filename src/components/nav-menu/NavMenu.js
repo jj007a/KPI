@@ -10,7 +10,6 @@ export default {
                     children: [
                         { name: 'dashboard', url: '/dashboard', title: '首页', icon: 'el-icon-s-home', permCode: "perms[index]" },
                         { name: '/department', url: '/department', title: '部门管理', icon: 'el-icon-house', permCode: "perms[department:list]" },
-                        { name: '/personnel', url: '/personnel', title: '考核人员管理', icon: 'el-icon-user', permCode: "perms[user:add]" },
                     ]
                 },
                 {
@@ -18,6 +17,7 @@ export default {
                     icon: 'el-icon-document-copy',
                     permCode: "perms[kpi]",
                     children: [
+                        { name: '/personnel', url: '/personnel', title: '考核人员管理', icon: 'el-icon-user', permCode: "perms[user:add]" },
                         { name: '/KPITemplate', url: '/KPITemplate', title: '绩效考核模板', icon: 'el-icon-document-checked', permCode: "perms[kpiMould:add]" },
                         { name: '/KPISetting', url: '/KPISetting', title: '绩效考核设置', icon: 'el-icon-setting', permCode: "perms[kpiScore:list]" },
                         { name: '/KPIScore', url: '/KPIScore', title: '绩效考核评分', icon: 'el-icon-edit', permCode: "perms[kpiScore:list]" },

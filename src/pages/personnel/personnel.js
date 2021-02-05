@@ -43,8 +43,9 @@ export default {
     },
     methods: {
         handleEdit(index, row) {
+            console.log(row.id)
             this.dialogVisible=true
-            this.$http.get('kpi/auth/user/detail',{id:row.id}).then(res=>{
+            this.$http.get('kpi/auth/personnel/detail',{id:row.id}).then(res=>{
                 this.tableData=res.data.data
                 this.addShow = false;
                 this.editShow = true;
@@ -59,7 +60,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.$http.post('kpi/auth/user/delete', { id: row.id }).then(res => {
+                this.$http.post('kpi/auth/personnel/delete', { id: row.id }).then(res => {
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
@@ -76,7 +77,7 @@ export default {
         // 显示一页数量
         handleSizeChange(val) {
             this.pageable.pageSize = val
-            this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
+            this.$http.get('kpi/auth/personnel/list', this.pageable).then(res => {
                 this.personList = res.data.data.data
                 // this.pageable = res.pageable
             })
@@ -85,7 +86,7 @@ export default {
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
             this.pageable.pageNumber=val
-            this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
+            this.$http.get('kpi/auth/personnel/list', this.pageable).then(res => {
                 if(res.data.data){
                      this.personList = res.data.data.data
                 }
@@ -99,7 +100,7 @@ export default {
                 if (valid) {
                     this.pageable.searchProperty ="u.realName";
                     this.pageable.searchPropertyValue=this.pageable.searchPropertyValue
-                    this.$http.get('kpi/auth/user/list', this.pageable).then(res => {
+                    this.$http.get('kpi/auth/personnel/list', this.pageable).then(res => {
                         if (res.data.data.data) {
                             this.personList = res.data.data.data
                         } else {
@@ -112,7 +113,7 @@ export default {
         },
         //初始化人员数据
         personInfo(){
-            this.$http.get('kpi/auth/user/list',this.pageable).then(res=>{
+            this.$http.get('kpi/auth/personnel/list',this.pageable).then(res=>{
                 if(res.data.status==200){
                     this.personList = res.data.data.data
                     this.pageable = res.data.data.pageable
@@ -147,7 +148,7 @@ export default {
         },
         // 添加
         addPerson(){
-            this.$http.post('kpi/auth/user/save',
+            this.$http.post('kpi/auth/personnel/save',
             JSON.stringify(this.tableData) ).then((res)=>{
                 if(res.status==200){
                     this.dialogVisible=false
@@ -169,7 +170,7 @@ export default {
         },
         // 编辑
         editPerson(){
-            this.$http.post('kpi/auth/user/update',
+            this.$http.post('kpi/auth/personnel/update',
             JSON.stringify(this.tableData) ).then((res)=>{
                 if(res.status==200){
                     this.dialogVisible=false;

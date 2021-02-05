@@ -22,9 +22,9 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="职位：">
+          <!-- <el-form-item label="职位：">
             <el-input v-model="tableData.position"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <!-- <el-form-item label="角色：">
             <el-input v-model="tableData.username"></el-input>
           </el-form-item> -->
@@ -65,10 +65,10 @@
             label="部门"
             width="180">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             prop="position"
             label="职位">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             prop="username"
             label="角色">

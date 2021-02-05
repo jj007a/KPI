@@ -136,9 +136,11 @@ export default {
      * 获取人员
      */
     getPorson() {
-      this.$http.get('kpi/auth/user/list').then(res => {
+      this.$http.get('kpi/auth/personnel/list/department').then(res => {
         console.log(res, '人员列表')
-        this.formLabelAlign.options = res.data.data.data;
+        this.formLabelAlign.options = res.data.data;
+        console.log( this.formLabelAlign.options);
+        
       })
     },
     //获取模板日期类型
@@ -152,6 +154,7 @@ export default {
       this.$http.get('kpi/auth/assignment/list', { pageNumber: 1, pageSize: 10 }).then(res => {
         if (res.data.status == 200) {
           this.assignmentList = res.data.data.data
+          console.log(this.assignmentList,"..z")
           this.assignmentList.map(item => {
             item.assessmentDate = this.$moment(item.assessmentDate).format('MM月')
             item.endDate = this.$moment(item.endDate).format('YYYY-MM-DD')
@@ -231,7 +234,7 @@ export default {
         this.tableData.kpiMouldId = data.kpiMouldId;
         this.tableData.assessmentDate = data.assessmentDate;
         this.tableData.id = data.id;
-        this.tableData.userIds = data.users.map(item => {
+        this.tableData.userIds = data.personnels.map(item => {
           return item.id
         })
         console.log(this.tableData)

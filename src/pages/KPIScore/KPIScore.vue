@@ -42,9 +42,9 @@
         <el-table-column prop="users" label="成员">
           <template slot-scope="scope">
             <span
-              v-for="(item, index) in scope.row.users"
+              v-for="(item, index) in scope.row.personnels"
               :key="item.id"
-              v-if="scope.row.users.length > 1"
+              v-if="scope.row.personnels.length > 1"
               >{{ index > 1 ? "..." : item.realName + "," }}</span
             >
             <span v-else>{{ item.realName }}</span>

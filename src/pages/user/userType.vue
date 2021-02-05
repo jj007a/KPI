@@ -23,7 +23,7 @@
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>
-      <h1>用户管理</h1>
+      <h1>用户类型</h1>
       <div class="divMain">
         <el-form :inline="true" :model="pageable" ref="pageable" class="demo-form-inline">
           <el-form-item label="姓名：">
@@ -36,15 +36,8 @@
         </el-form>
       </div>
       <el-table class="animated bounceInDown" :data="personList" style="width: 100%">
-        <el-table-column prop="realName" label="姓名" width="180"></el-table-column>
-        <el-table-column prop="department.name" label="部门" width="180"></el-table-column>
-        <el-table-column prop="position" label="职位"></el-table-column>
-        <el-table-column label="角色">
-          <template slot-scope="scope">
-            <span v-for="item in scope.row.roles" :key="item.id">{{ item.roleName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="username" label="用户名" width="180"></el-table-column>
+        <el-table-column prop="responsibility" label="类型名称" width="180"></el-table-column>
+        <el-table-column prop="categoryName" label="职责描述" width="180"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
