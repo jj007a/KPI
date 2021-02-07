@@ -327,18 +327,25 @@ export default {
         username: "",
         password: "",
         roles: [],
+         disabled: true
       };
     },
 
     // 添加
     addPerson() {
-      this.tableData.roles.push({
+      if(this.rolesId){
+        this.tableData.roles.push({
         id: this.rolesId,
       });
+      }else{
+        this.tableData.roles=null
+      }
+       this.disabled= true;
       this.$http
         .post("kpi/auth/user/save", JSON.stringify(this.tableData))
         .then((res) => {
           if (res.data.status == 200) {
+            this.disabled= false;
             this.dialogVisible = false;
             this.$message({
               type: "success",
@@ -363,13 +370,21 @@ export default {
     },
     // 编辑
     editPerson() {
+  if(this.rolesId){
+     this.tableData.roles=[]
+          this.tableData.roles.push({
+          id: this.rolesId,
+        });
+        }else{
+          this.tableData.roles=null
+        }
+       this.disabled= true;
       this.$http
         .post("kpi/auth/user/update", JSON.stringify(this.tableData))
         .then((res) => {
-          console.log(res);
-
           if (res.data.status == 200) {
             this.dialogVisible = false;
+             this.disabled= false;
             this.$message({
               type: "success",
               message: "编辑成功!",
@@ -386,7 +401,13 @@ export default {
             this.editShow = false;
             this.propTitle = "添加人员";
             this.personInfo();
-          }
+          }else{
+                        this.disabled = false;
+                        this.$message({
+                            type: 'error',
+                            message: `${res.data.msg}${res.data.data}`
+                        });
+                    }
         });
     },
     authority() {
@@ -431,7 +452,7 @@ h2 {
 }
 .personnelContent {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   padding: 40px 24px;
   box-sizing: border-box;
   background-color: #fff;

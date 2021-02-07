@@ -97,6 +97,7 @@ export default {
                 searchProperty:'u.realName', */
       },
       totals: 40,
+      disabled:true
     };
   },
   created() {
@@ -199,10 +200,13 @@ export default {
     },
     // 添加
     addPerson() {
+       this.disabled= true;
       this.$http
         .post("kpi/auth/permission/save", JSON.stringify(this.tableData))
         .then((res) => {
-          if (res.status == 200) {
+         
+          if (res.data.status == 200) {
+            this.disabled= false;
             this.dialogVisible = false;
             this.$message({
               type: "success",
@@ -214,15 +218,24 @@ export default {
               requestPath: "",
             };
             this.jurisdictionInfo();
-          }
+          }else{
+                this.disabled = false;
+                this.$message({
+                    type: 'error',
+                    message: `${res.data.msg}${res.data.data}`
+                });
+            }
         });
     },
     // 编辑
     editPerson() {
+      this.disabled= true;
       this.$http
         .post("kpi/auth/user/update", JSON.stringify(this.tableData))
         .then((res) => {
-          if (res.status == 200) {
+          
+          if (res.data.status == 200) {
+            this.disabled= false;
             this.dialogVisible = false;
             this.$message({
               type: "success",
@@ -240,7 +253,13 @@ export default {
             this.editShow = false;
             this.propTitle = "添加人员";
             this.jurisdictionInfo();
-          }
+          }else{
+                this.disabled = false;
+                this.$message({
+                    type: 'error',
+                    message: `${res.data.msg}${res.data.data}`
+                });
+            }
         });
     },
   },

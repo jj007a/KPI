@@ -99,14 +99,17 @@ export default {
                     })
                     item.children.forEach((it, i) => {
                         roles[0].permissions.forEach(a => {
-                            
+
                             if (a.permCode == it.permCode) {
-                                newObj.children.push(it)
-                                this.newRouterNavsList.push(newObj)
-                                this.newRouterNavsList=[...new Set(this.newRouterNavsList)]
+                                if (JSON.stringify(newObj) != '{}') {
+                                    newObj.children.push(it)
+                                    this.newRouterNavsList.push(newObj)
+                                }
+
                             }
                         })
                     })
+                    this.newRouterNavsList = [...new Set(this.newRouterNavsList)]
                 })
 
             }

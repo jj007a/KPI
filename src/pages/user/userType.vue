@@ -94,7 +94,8 @@ export default {
       },
       totals: 40,
       isDel: false,
-      isAdd: false
+      isAdd: false,
+      disabled:true
     };
   },
   created() {
@@ -213,8 +214,10 @@ export default {
       this.$http
         .post("kpi/auth/user_category/save", JSON.stringify(this.tableData))
         .then(res => {
+          this.disabled= false;
           if (res.data.status == 200) {
             this.dialogVisible = false;
+            this.disabled= true;
             this.$message({
               type: "success",
               message: "添加成功"
@@ -237,7 +240,9 @@ export default {
       this.$http
         .post("kpi/auth/user_category/update", JSON.stringify(this.tableData))
         .then(res => {
+          this.disabled= false;
           if (res.data.status == 200) {
+            this.disabled= true;
             this.dialogVisible = false;
             this.$message({
               type: "success",
@@ -296,7 +301,7 @@ h2 {
 }
 .personnelContent {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   padding: 40px 24px;
   box-sizing: border-box;
   background-color: #fff;

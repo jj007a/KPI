@@ -191,13 +191,11 @@ export default {
         const { export_json_to_excel } = require("../../excel/Export2Excle"); //这里必须使用绝对路径
         const proHeader = [];
         that.excelData.assignmentItems[0].userItems.forEach((item) => {
-          console.log(item.realName);
           proHeader.push(item.realName);
         });
         const tHeader = ["模板名称", "分值", ...proHeader]; // 导出的表头名
         const filterVal = ["kpiName", "score"]; // 导出的表头字段名
         const list = that.excelData.assignmentItems;
-        console.log(list);
         const data = that.formatJson(filterVal, list);
         let time1,
           time2 = "";

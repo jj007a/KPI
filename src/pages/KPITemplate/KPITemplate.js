@@ -9,14 +9,12 @@ export default {
                 id: ""
             },
             dynamicValidateForm: {
-                department: {
-                    id: ""
-                },
+
                 id: "",
                 kpiMouldItems: [{
                     kpiName: '',
                     score: '',
-                    memoItems:[]
+                    memoItems: []
                 }],
                 mouldName: '',
                 totalScore: ''
@@ -26,7 +24,8 @@ export default {
             dialogViewProp: false,
             isSave: true,
             isView: false,
-            isEdit: false
+            isEdit: false,
+            disabled: false
         }
     },
     created() {
@@ -45,26 +44,25 @@ export default {
             this.dynamicValidateForm.kpiMouldItems.push({
                 kpiName: '',
                 score: '',
-                memoItems:[]
+                memoItems: []
             });
         },
         addStandard(item) {
             var index = this.dynamicValidateForm.kpiMouldItems.indexOf(item)
-            console.log(index,item)
-            if(index !=-1){
+            console.log(index, item)
+            if (index != -1) {
                 item.memoItems.push({
-                   memo:""
+                    memo: ""
                 });
             }
-            
+
         },
-        removeStandard(item,it) {
+        removeStandard(item, it) {
             console.log(item)
             let index = item.memoItems.indexOf(it)
             if (index !== -1) {
                 item.memoItems.splice(index, 1)
             }
-            console.log(index)
         },
         // 模板列表下拉菜单
         editKpiMould(a) {
@@ -77,7 +75,6 @@ export default {
                     this.isEdit = true;
                 })
             } else if (a.value == 'view') {
-                // this.dialogViewProp=true
                 this.$http.get('kpi/auth/mould/detail', { id: a.id }).then(res => {
                     this.dynamicValidateForm = res.data.data
                     this.header = '绩效考核查看'
@@ -110,9 +107,7 @@ export default {
         // 返回
         moudelBack() {
             this.dynamicValidateForm = {
-                department: {
-                    id: ""
-                },
+
                 id: "",
                 kpiMouldItems: [{
                     kpiName: '',
@@ -131,8 +126,7 @@ export default {
             this.$http.get('kpi/auth/mould/list').then(res => {
                 if (res.data.status == 200) {
                     this.KpiMouldList = res.data.data.data.data
-                    this.department.id=this.$store.getters.depId
-                } else if (res.data.status == 401){
+                } else if (res.data.status == 401) {
                     this.$message({
                         type: "error",
                         message: `登录已过期,${res.data.msg}`
@@ -145,7 +139,7 @@ export default {
                         message: `${res.data.msg}`
                     })
                 }
-                
+
             })
         },
         // 获取部门数据
@@ -166,11 +160,12 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    this.disabled = true
                     // this.dynamicValidateForm.department.id = this.$store.getters.depId
                     this.$http.post('kpi/auth/mould/save',
                         JSON.stringify(this.dynamicValidateForm)).then(res => {
-                            console.log(res)
                             if (res.data.status == 200) {
+                                this.disabled = false;
                                 this.$message({
                                     type: 'success',
                                     message: '模板添加成功'
@@ -178,9 +173,6 @@ export default {
                                 this.getKpiMouldInfo()
                                 this.$refs[formName].resetFields();
                                 this.dynamicValidateForm = {
-                                    department: {
-                                        id: ""
-                                    },
                                     id: "",
                                     kpiMouldItems: [{
                                         kpiName: '',
@@ -193,13 +185,15 @@ export default {
                             } else if (res.data.status == 401) {
                                 this.$message({
                                     type: 'error',
-                                    message: '登录过去,请重新登录'
+                                    message: `${res.data.msg}${res.data.data}`
                                 })
+                                this.disabled = false;
                             } else {
                                 this.$message({
                                     type: 'error',
-                                    message: '服务端错误'
+                                    message: `${res.data.msg}${res.data.data}`
                                 })
+                                this.disabled = false;
                             }
 
                         })
@@ -215,16 +209,15 @@ export default {
                 if (valid) {
                     this.$http.post('kpi/auth/mould/update',
                         JSON.stringify(this.dynamicValidateForm)).then(res => {
+                            this.disabled = false;
                             if (res.data.status == 200) {
+                                this.disabled = true;
                                 this.$message({
                                     type: 'success',
                                     message: '模板编辑成功'
                                 })
                                 this.getKpiMouldInfo()
                                 this.dynamicValidateForm = {
-                                    department: {
-                                        id: ""
-                                    },
                                     id: "",
                                     kpiMouldItems: [{
                                         kpiName: '',
@@ -238,16 +231,18 @@ export default {
                                 this.isView = false;
                                 this.isEdit = false;
 
-                            } else if (res.data.status == 401){
+                            } else if (res.data.status == 401) {
                                 this.$message({
                                     type: 'error',
-                                    message: '登录过去,请重新登录'
+                                    message: `${res.data.msg}${res.data.data}`
                                 })
-                            }else{
+                                this.disabled = false;
+                            } else {
                                 this.$message({
                                     type: 'error',
-                                    message: res.data.msg
-                                }) 
+                                    message:`${res.data.msg}${res.data.data}`
+                                })
+                                this.disabled = false;
                             }
 
                         })

@@ -11,9 +11,11 @@ export default {
                     }
                 ],
             },
-            userItems:[],
+            userItems:[
+                {factScore:""}
+            ],
             rules: {
-                num: [{ required: true, message: '数量不能为空', trigger: 'blur' }],
+                factScore: [{ required: true, message: "分值不能为空", trigger: 'blur' }],
             },
         };
     },
@@ -53,7 +55,6 @@ export default {
             })
         },  
         submitForm(formName){
-
             this.$confirm('确定考核提交吗？提交之后不能修改。', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -61,12 +62,17 @@ export default {
             }).then(() => {
                 this.$http.post('kpi/auth/score/save',
                     JSON.stringify(this.tableForm)).then(res => {
-                        if (res.status == 200) {
+                        if (res.data.status == 200) {
                             this.$message({
                                 type:'success',
                                 message:"考核成功"
                             })
                             this.$router.push('/KPIScore')
+                        }else{
+                            this.$message({
+                                type:'error',
+                                message:"用户实际得分不能为空"
+                            })
                         }
                     })
             }).catch(() => {

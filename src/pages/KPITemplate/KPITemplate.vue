@@ -102,7 +102,7 @@
            
           </div>
           <el-form-item v-if="isSave">
-            <el-button type="primary" @click="submitForm('dynamicValidateForm')"
+            <el-button type="primary" :disabled="disabled" @click="submitForm('dynamicValidateForm')"
               >提交</el-button
             >
             <el-button @click="addDomain">新增考核项目</el-button>
@@ -193,7 +193,8 @@ h2 {
 }
 .KPITemplateContent {
   width: 60%;
-  height: 100%;
+   height: 665px;
+  overflow: auto;
   padding: 40px 24px;
   box-sizing: border-box;
   background-color: #fff;
@@ -215,8 +216,7 @@ h2 {
 .KPITemplate .divMain {
   width: 100%;
   margin-top: 32px;
-  height: 665px;
-  overflow: auto;
+ 
 }
 .KPITemplate .divMain .templateHeader {
   display: flex;

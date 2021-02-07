@@ -2,7 +2,7 @@
 <template>
   <div class="personnel">
     <div class="personnelContent">
-      <el-dialog :title="propTitle" :visible.sync="dialogVisible" width="40%">
+      <el-dialog :title="propTitle" :visible.sync="dialogVisible" width="55%">
         <div class="propBox">
           <el-form label-width="80px" :model="tableData">
             <el-form-item label="角色名称">
@@ -68,6 +68,7 @@
         </el-table-column>
         <el-table-column label="操作">
          <template slot-scope="scope">
+           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button
               size="mini"
               @click="handleDelete(scope.$index, scope.row)"
@@ -122,6 +123,7 @@ export default {
         /* searchPropertyValue:"",
                 searchProperty:'u.realName', */
       },
+      disabled:true,
       totals: 40,
     };
   },
@@ -132,11 +134,17 @@ export default {
   methods: {
     handleEdit(index, row) {
       this.dialogVisible = true;
-      this.$http.get("kpi/auth/user/detail", { id: row.id }).then((res) => {
+      this.$http.get("kpi/auth/role/detail", { id: row.id }).then((res) => {
         this.tableData = res.data.data;
+        this.values=[]
+        this.tableData.permissions.forEach(it=>{
+          console.log(it.permName,'sfs')
+          this.values.push(it.id) 
+        })
+        console.log(this.values)
         this.addShow = false;
         this.editShow = true;
-        this.propTitle = "编辑人员";
+        this.propTitle = "编辑角色";
       });
     },
     // 删除
@@ -269,10 +277,12 @@ export default {
           id: item,
         });
       });
+       this.disabled= true;
       this.$http
         .post("kpi/auth/role/save", JSON.stringify(this.tableData))
         .then((res) => {
           if (res.status == 200) {
+            this.disabled= false;
             this.dialogVisible = false;
             this.$message({
               type: "success",
@@ -290,11 +300,19 @@ export default {
     },
     // 编辑
     editPerson() {
+      this.tableData.permissions=[]
+       this.values.map((item) => {
+        return this.tableData.permissions.push({
+          id: item,
+        });
+      });
+      this.disabled= true;
       this.$http
-        .post("kpi/auth/user/update", JSON.stringify(this.tableData))
+        .post("kpi/auth/role/update", JSON.stringify(this.tableData))
         .then((res) => {
-          if (res.status == 200) {
+          if (res.data.status == 200) {
             this.dialogVisible = false;
+            this.disabled= false;
             this.$message({
               type: "success",
               message: "编辑成功!",
@@ -310,7 +328,13 @@ export default {
             this.addShow = true;
             this.editShow = false;
             this.propTitle = "添加人员";
-            this.personInfo();
+           this.roleInfo();
+          }else{
+              this.disabled = false;
+              this.$message({
+                  type: 'error',
+                  message: `${res.data.msg}${res.data.data}`
+              });
           }
         });
     },
@@ -340,7 +364,7 @@ h2 {
 }
 .personnelContent {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   padding: 40px 24px;
   box-sizing: border-box;
   background-color: #fff;

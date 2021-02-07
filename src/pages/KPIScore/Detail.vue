@@ -32,6 +32,12 @@
         label="考核标准"
        >
          <template slot-scope="scope">
+         <!--   <el-table :data="scope.row.memeItems">
+             <el-table-column
+             prop="memo"
+             >
+             </el-table-column>
+           </el-table> -->
              <div v-for="item in scope.row.memoItems" :key="item.memo" class="boxItem">
                   {{item.memo}}
              </div>
@@ -45,13 +51,20 @@
         align="center"
         >
           <template slot-scope="scope">
-            <!-- {{scope.$index}}{{index}}{{scope.column.property}} -->
-             <!-- {{scope.row}} -->
-              <el-input v-model="scope.row.userItems[index].factScore"></el-input>
-                 
+            
+              <el-form-item  >
+                <el-input v-model="scope.row.userItems[index].factScore"></el-input>
+              </el-form-item>
           </template>
         </el-table-column>
-        <!-- <el-table-column
+        <!-- 
+           :prop="'assignmentItems['+scope.$index+'].userItems[' + index + ']score'"
+              :rules="{
+                required: true,
+                message: '单项考核分数',
+                trigger: 'blur',
+              }"
+          <el-table-column
             fixed="right"
         prop="Assessor"
         label="考评人"

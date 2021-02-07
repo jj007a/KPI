@@ -32,11 +32,11 @@
        </div>
        
         <span slot="footer" class="dialog-footer" v-if="addShow">
-           <el-button type="primary" @click="addPerson">确 定</el-button>
+           <el-button type="primary" @click="addPerson" :disabled="disabled">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
         <span slot="footer" class="dialog-footer" v-if="editShow">
-           <el-button type="primary" @click="editPerson">确 定</el-button>
+           <el-button type="primary" @click="editPerson" :disabled="disabled">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>
@@ -48,7 +48,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="search('pageable')">查询</el-button>
-              <el-button type="primary" @click="dialogVisible = true" v-if="isAdd">添加</el-button>
+              <el-button type="primary" @click="handleAdd"  v-if="isAdd">添加</el-button>
             </el-form-item>
         </el-form>
         </div>
@@ -129,7 +129,7 @@ export default {
   }
   .personnelContent{
     width: 100%;
-    height: 100%; 
+    /* height: 100%;  */
     padding: 40px 24px;
     box-sizing: border-box;
     background-color: #fff;

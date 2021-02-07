@@ -14,6 +14,14 @@ export default {
         kpiCategory: "",
         userIds: []
       },
+      rules: {
+        kpiMouldId: [
+          { required: true, message: '请选择考核模板', trigger: 'change' }
+        ],
+        userIds: [
+          { required: true, message: '请选择考核人员', trigger: 'change' }
+        ]
+      },
       propTitle: '绩效模板任务添加',
       assignmentList: [],
       categoryList: [],
@@ -29,7 +37,7 @@ export default {
         assessmentDate: ""
       },
       editFromLabel: {
-    
+
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -58,6 +66,7 @@ export default {
       isKpiAdd: false,
       isKpiDel: false,
       isKpiEdit: false,
+      disabled: false
     }
 
   },
@@ -66,7 +75,7 @@ export default {
     this.getKpiTemplate();
     this.getPorson()
     this.getAssignmentList()
-    this. authority()
+    this.authority()
   },
   methods: {
     handleSizeChange(val) {
@@ -132,10 +141,8 @@ export default {
      */
     getPorson() {
       this.$http.get('kpi/auth/personnel/list/department').then(res => {
-        console.log(res, '人员列表')
         this.formLabelAlign.options = res.data.data;
-        console.log( this.formLabelAlign.options);
-        
+
       })
     },
     //获取模板日期类型
@@ -149,7 +156,6 @@ export default {
       this.$http.get('kpi/auth/assignment/list', { pageNumber: 1, pageSize: 10 }).then(res => {
         if (res.data.status == 200) {
           this.assignmentList = res.data.data.data
-          console.log(this.assignmentList,"..z")
           this.assignmentList.map(item => {
             item.assessmentDate = this.$moment(item.assessmentDate).format('MM月')
             item.endDate = this.$moment(item.endDate).format('YYYY-MM-DD')
@@ -198,9 +204,11 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.disabled = true;
           this.tableData.assessorId = this.$store.state.userId
           this.$http.post('kpi/auth/assignment/save',
             JSON.stringify(this.tableData)).then(res => {
+              this.disabled = false
               this.$message({
                 message: '模板配置完成',
                 type: 'success'
@@ -222,17 +230,18 @@ export default {
       this.propTitle = '绩效考核任务编辑';
       this.$http.get('kpi/auth/assignment/detail', { id: row.id }).then(res => {
         let data = res.data.data;
-        console.log(res)
         this.tableData.endDate = data.endDate;
         this.tableData.startDate = data.startDate;
         this.tableData.kpiCategory = data.kpiCategory;
         this.tableData.kpiMouldId = data.kpiMouldId;
         this.tableData.assessmentDate = data.assessmentDate;
         this.tableData.id = data.id;
-        this.tableData.userIds = data.personnels.map(item => {
-          return item.id
-        })
-        console.log(this.tableData)
+        if (data.personnels) {
+          this.tableData.userIds = data.personnels.map(item => {
+            return item.id
+          })
+        }
+
       })
     },
     // 下拉多选数据强制刷新
@@ -241,9 +250,10 @@ export default {
     },
     //编辑
     edit() {
-
+      this.disabled = true;
       this.$http.post('kpi/auth/assignment/update',
         JSON.stringify(this.tableData)).then(res => {
+          this.disabled = false;
           this.$message({
             message: '模板编辑完成',
             type: 'success'
@@ -279,7 +289,6 @@ export default {
     authority() {
       if (this.$store.getters.roles.length > 0) {
         const roles = this.$store.getters.roles;
-        console.log(roles)
         roles[0].permissions.forEach(item => {
           switch (item.permCode) {
             case "perms[kpiAssignment:delete]":

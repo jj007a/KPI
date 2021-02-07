@@ -4,8 +4,8 @@
     <div class="personnelContent">
       <el-dialog :title="propTitle" :visible.sync="dialogVisible" width="40%">
         <div class="propBox">
-          <el-form label-width="90px" :model="tableData" ref="tableData">
-            <el-form-item label="考核模板：">
+          <el-form label-width="100px" :model="tableData" ref="tableData" :rules="rules">
+            <el-form-item label="考核模板：" prop="kpiMouldId">
               <el-select
                 v-model="tableData.kpiMouldId"
                 placeholder="请选择模板"
@@ -53,7 +53,7 @@
               >
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="考核对象：">
+            <el-form-item label="考核对象：" prop="userIds">
               <el-select
                 v-model="tableData.userIds"
                 multiple
@@ -74,12 +74,12 @@
         </div>
         <span slot="footer" class="dialog-footer" v-if="isAdd">
           <el-button type="primary" @click.prevent="submitForm('tableData')"
-            >确 定</el-button
+           :disabled="disabled" >确 定</el-button
           >
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
         <span slot="footer" class="dialog-footer" v-if="isEdit">
-          <el-button type="primary" @click.prevent="edit">确 定</el-button>
+          <el-button type="primary" @click.prevent="edit" :disabled="disabled">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>
@@ -207,7 +207,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" @click="viewDetail(scope.row)" v-if="isKpiEdit"
-              >编辑</el-button
+            :disabled="disabled"  >编辑</el-button
             >
             <el-button
               size="mini"
@@ -265,7 +265,7 @@ h2 {
 }
 .personnelContent {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   padding: 40px 24px;
   box-sizing: border-box;
   background-color: #fff;

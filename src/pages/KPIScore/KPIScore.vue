@@ -112,7 +112,7 @@ h2 {
 }
 .personnelContent {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   padding: 40px 24px;
   box-sizing: border-box;
   background-color: #fff;
