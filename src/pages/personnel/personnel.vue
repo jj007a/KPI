@@ -22,12 +22,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item label="职位：">
-            <el-input v-model="tableData.position"></el-input>
-          </el-form-item> -->
-          <!-- <el-form-item label="角色：">
-            <el-input v-model="tableData.username"></el-input>
-          </el-form-item> -->
+         
         </el-form>
        </div>
        

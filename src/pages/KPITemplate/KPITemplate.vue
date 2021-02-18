@@ -87,7 +87,7 @@
                <el-button @click="addStandard(mouldItem)">新增标准</el-button>
             </el-form-item>
           </div>
-            <div class="kpiStandard" v-for="(its,index) in mouldItem.memoItems" :key="its.index">
+            <div class="kpiStandard" v-for="(its,index) in mouldItem.memoItems" :key="index">
                  <el-input
                  
                   v-model="its.memo"
@@ -149,7 +149,7 @@
         <div>创建时间 : {{ $moment(item.createdDate).format('YYYY-MM-DD')  }}</div>
         <div
           v-for="(o, index) in item.kpiMouldItems"
-          :key="o.index"
+          :key="index"
           class="text item"
           v-if="index <= 1"
         >

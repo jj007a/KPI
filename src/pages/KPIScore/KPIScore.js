@@ -37,6 +37,12 @@ export default {
             let data = { ...this.pageable, ...this.formInline }
             this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
                 this.assignmentList = res.data.data.data
+                this.assignmentList.map(item => {
+                    item.assessmentDate = this.$moment(item.assessmentDate).format('MM月')
+                    item.endDate = this.$moment(item.endDate).format('YYYY-MM-DD')
+                    item.startDate = this.$moment(item.startDate).format('YYYY-MM-DD')
+                    return item
+                })
             })
         },
         // 分页
@@ -45,6 +51,12 @@ export default {
             let data = { ...this.pageable, ...this.formInline }
             this.$http.get('kpi/auth/assignment/list', this.pageable).then(res => {
                 this.assignmentList = res.data.data.data
+                this.assignmentList.map(item => {
+                    item.assessmentDate = this.$moment(item.assessmentDate).format('MM月')
+                    item.endDate = this.$moment(item.endDate).format('YYYY-MM-DD')
+                    item.startDate = this.$moment(item.startDate).format('YYYY-MM-DD')
+                    return item
+                })
             })
         },
         // 搜索
