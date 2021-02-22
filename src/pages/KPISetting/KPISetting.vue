@@ -40,7 +40,7 @@
                 ></el-date-picker>
               </el-col>
             </el-form-item> -->
-            <el-form-item label="考核周期：">
+            <el-form-item label="考核周期：" prop="assessmentDate">
               <!-- <el-select v-model="tableData.kpiCategory" placeholder="请选择周期" style="width: 100%;">
                 <el-option v-for="(val,key) in categoryList" :key="key"  :label="val" :value="key"></el-option>
                 
@@ -49,7 +49,7 @@
                 v-model="tableData.assessmentDate"
                 type="month"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                placeholder="选择年"
+                placeholder="选择年月"
               >
               </el-date-picker>
             </el-form-item>

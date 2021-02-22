@@ -31,7 +31,7 @@
             <el-table-column
               v-for="(it, index) in tableForm.assignmentItems[0].userItems"
               :label="it.realName"
-              :key="it.userId"
+              :key="index"
               width="100"
               align="center"
               prop="factScore"
@@ -84,7 +84,6 @@ export default {
   methods: {
     //获取考核评分详情
     getKpiScoreDetail() {
-      console.log(this.$route.query.id);
       let assignmentId = { assignmentId: this.$route.query.id };
       this.$http.get("kpi/auth/score/detail", assignmentId).then(res => {
         let data = res.data.data;
@@ -115,7 +114,6 @@ export default {
             });
           }
         });
-        console.log(values, "");
         if (!values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
@@ -127,7 +125,6 @@ export default {
           }, 0);
         } else {
           if (values.every(val => Array.isArray(val))) {
-            console.log("array");
             score = values.reduce((pre, cur, i, arr) => {
               return this.plus(pre, cur);
             });
@@ -143,7 +140,6 @@ export default {
 
     plus(a, b) {
       return a.map(function(e, i) {
-        console.log(e, "e");
         return e + b[i];
       });
     },

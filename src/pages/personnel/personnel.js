@@ -16,6 +16,11 @@ export default {
                 position: "",
                 username: ""
             },
+            rules: {
+                realName: [
+                    { required: true, message: "姓名不能为空" }
+                ]
+            },
             value: false,
             currentPage4: 1,
             dialogVisible: false,
@@ -160,34 +165,40 @@ export default {
             })
         },
         // 添加
-        addPerson() {
-            this.disabled = true;
-            this.$http.post('kpi/auth/personnel/save',
-                JSON.stringify(this.tableData)).then((res) => {
-                    if (res.data.status == 200) {
-                        this.dialogVisible = false;
-                        this.disabled = false;
-                        this.$message({
-                            type: 'success',
-                            message: '添加成功'
-                        });
-                        this.tableData = {
-                            department: {
-                                id: "",
-                            },
-                            realName: "",
-                            position: "",
-                            username: ""
+        addPerson(formName) {
+            this.$refs[formName].validate((valid) => {
+                if(valid){
+                    this.disabled = true;
+                this.$http.post('kpi/auth/personnel/save',
+                    JSON.stringify(this.tableData)).then((res) => {
+                        if (res.data.status == 200) {
+                            this.dialogVisible = false;
+                            this.disabled = false;
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功'
+                            });
+                            this.tableData = {
+                                department: {
+                                    id: "",
+                                },
+                                realName: "",
+                                position: "",
+                                username: ""
+                            }
+                            this.personInfo()
+                        } else {
+                            this.disabled = false;
+                            this.$message({
+                                type: 'error',
+                                message: `${res.data.msg}${res.data.data}`
+                            });
                         }
-                        this.personInfo()
-                    }else{
-                        this.disabled = false;
-                        this.$message({
-                            type: 'error',
-                            message: `${res.data.msg}${res.data.data}`
-                        });
-                    }
-                })
+                    })
+                }
+                
+            })
+
         },
         // 编辑
         editPerson() {
@@ -213,7 +224,7 @@ export default {
                         this.editShow = false;
                         this.propTitle = '添加人员'
                         this.personInfo()
-                    }else{
+                    } else {
                         this.disabled = false;
                         this.$message({
                             type: 'error',

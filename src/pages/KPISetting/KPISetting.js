@@ -18,6 +18,9 @@ export default {
         kpiMouldId: [
           { required: true, message: '请选择考核模板', trigger: 'change' }
         ],
+        assessmentDate:[{
+          required: true, message: '请选择年月'
+        }],
         userIds: [
           { required: true, message: '请选择考核人员', trigger: 'change' }
         ]
@@ -38,22 +41,7 @@ export default {
       },
       editFromLabel: {
 
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
+        options: [],
         objects: [],
       },
       isAdd: true,
@@ -175,7 +163,7 @@ export default {
             return item
           })
           this.pageable = res.data.data.pageable;
-          this.totals = res.data.data.totalPages;
+          this.totals = res.data.data.total;
         } else if (res.data.status == 401) {
           this.$message({
             type: "error",

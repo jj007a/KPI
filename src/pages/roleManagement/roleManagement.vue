@@ -175,7 +175,7 @@ export default {
     // 显示一页数量
     handleSizeChange(val) {
       this.pageable.pageSize = val;
-      this.$http.get("kpi/auth/user/list", this.pageable).then((res) => {
+      this.$http.get("kpi/auth/role/list", this.pageable).then((res) => {
         this.personList = res.data.data.data;
         // this.pageable = res.pageable
       });
@@ -184,7 +184,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.pageable.pageNumber = val;
-      this.$http.get("kpi/auth/user/list", this.pageable).then((res) => {
+      this.$http.get("kpi/auth/role/list", this.pageable).then((res) => {
         if (res.data.data) {
           this.personList = res.data.data.data;
         }

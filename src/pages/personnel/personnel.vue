@@ -8,8 +8,8 @@
         width="40%"
        >
        <div class="propBox">
-        <el-form  label-width="80px" :model="tableData">
-          <el-form-item label="姓名：">
+        <el-form  label-width="80px" :rules="rules" :model="tableData" ref="tableData">
+          <el-form-item label="姓名：" prop="realName">
             <el-input v-model="tableData.realName"></el-input>
           </el-form-item>
           <el-form-item label="部门：">
@@ -27,7 +27,7 @@
        </div>
        
         <span slot="footer" class="dialog-footer" v-if="addShow">
-           <el-button type="primary" @click="addPerson" :disabled="disabled">确 定</el-button>
+           <el-button type="primary" @click="addPerson('tableData')" :disabled="disabled">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
         <span slot="footer" class="dialog-footer" v-if="editShow">
