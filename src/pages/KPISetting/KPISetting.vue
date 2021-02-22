@@ -198,15 +198,16 @@
             <span
               v-for="(item, index) in scope.row.personnels"
               :key="item.id"
-              v-if="scope.row.personnels.length > 1"
-              >{{ index > 1 ? "..." : item.realName + "," }}</span
+              v-if="scope.row.personnels.length > 0 && index < 3"
+              >{{index>=2?"...":item.realName+','}}</span
             >
-            <span v-else>{{ item.realName }}</span>
+          <!--   <span v-else-if="index==2">...</span>
+            <span v-else-if="index==0">{{item.realName}}</span> -->
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="viewDetail(scope.row)" v-if="isKpiEdit"
+            <el-button size="mini" @click="viewDetail(scope.row)" v-if="!scope.row.isEnd &&isKpiEdit"
             :disabled="disabled"  >编辑</el-button
             >
             <el-button
@@ -215,6 +216,9 @@
               v-if="!scope.row.isEnd && isKpiDel"
               @click="del(scope.row)"
               >删除</el-button
+            >
+            <el-button size="mini" @click="view(scope.row)" v-if="scope.row.isEnd "
+            :disabled="disabled"  >查看</el-button
             >
           </template>
         </el-table-column>

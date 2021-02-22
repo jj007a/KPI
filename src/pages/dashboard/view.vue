@@ -180,7 +180,8 @@ export default {
       try {
         FileSaver.saveAs(
           new Blob([wbout], { type: "application/octet-stream" }),
-          "table.xlsx"
+          // "table.xlsx"
+          `${this.tableForm.assignmentMouldName}-${this.$moment(this.tableForm.assessmentDate).format("MM")}月.xlsx`
         ); //table是自己导出文件时的命名，随意
       } catch (e) {
         if (typeof console !== "undefined") console.log(e, wbout);

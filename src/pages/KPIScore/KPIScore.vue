@@ -44,10 +44,10 @@
             <span
               v-for="(item, index) in scope.row.personnels"
               :key="item.id"
-              v-if="scope.row.personnels.length > 1"
-              >{{ index > 1 ? "..." : item.realName + "," }}</span
+               v-if="scope.row.personnels.length > 0 && index < 3"
+              >{{index>=2?"...":item.realName+','}}</span
             >
-            <span v-else>{{ item.realName }}</span>
+           
           </template>
         </el-table-column>
         <el-table-column label="操作">

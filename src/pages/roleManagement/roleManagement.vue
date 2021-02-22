@@ -45,7 +45,7 @@
         :data="personList"
         style="width: 100%"
       >
-        <el-table-column prop="roleDesc" label="角色名称" width="180">
+        <el-table-column prop="roleDesc" label="角色描述" width="180">
         </el-table-column>
         <el-table-column prop="roleName" label="角色" width="180">
         </el-table-column>
@@ -138,7 +138,6 @@ export default {
         this.tableData = res.data.data;
         this.values=[]
         this.tableData.permissions.forEach(it=>{
-          console.log(it.permName,'sfs')
           this.values.push(it.id) 
         })
         console.log(this.values)

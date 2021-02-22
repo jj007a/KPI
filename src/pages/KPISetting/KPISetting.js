@@ -18,9 +18,9 @@ export default {
         kpiMouldId: [
           { required: true, message: '请选择考核模板', trigger: 'change' }
         ],
-        assessmentDate:[{
-          required: true, message: '请选择年月'
-        }],
+        /* assessmentDate:[{
+          required: true, message: '请选择年月' ,trigger: 'change'
+        }], */
         userIds: [
           { required: true, message: '请选择考核人员', trigger: 'change' }
         ]
@@ -226,6 +226,28 @@ export default {
     viewDetail(row) {
       this.dialogVisible = true
       this.isEdit = true;
+      this.isAdd = false;
+      this.propTitle = '绩效考核任务编辑';
+      this.$http.get('kpi/auth/assignment/detail', { id: row.id }).then(res => {
+        let data = res.data.data;
+        this.tableData.endDate = data.endDate;
+        this.tableData.startDate = data.startDate;
+        this.tableData.kpiCategory = data.kpiCategory;
+        this.tableData.kpiMouldId = data.kpiMouldId;
+        this.tableData.assessmentDate = data.assessmentDate;
+        this.tableData.id = data.id;
+        if (data.personnels) {
+          this.tableData.userIds = data.personnels.map(item => {
+            return item.id
+          })
+        }
+
+      })
+    },
+    //查看详情
+    view(row) {
+      this.dialogVisible = true
+      this.isEdit = false;
       this.isAdd = false;
       this.propTitle = '绩效考核任务编辑';
       this.$http.get('kpi/auth/assignment/detail', { id: row.id }).then(res => {

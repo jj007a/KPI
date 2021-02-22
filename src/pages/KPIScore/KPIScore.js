@@ -105,7 +105,7 @@ export default {
                         return item
                     })
                     this.pageable = res.data.data.pageable
-                    this.totals = res.data.data.totalPages
+                    this.totals = res.data.data.total
                 } else if (res.data.status == 401) {
                     this.$message({
                         type: "error",
